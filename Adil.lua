@@ -643,12 +643,6 @@ function FPSmenu()
 ┃                                     ┃
 ┃       💜 YUVRAJ FPS BOOSTER 💜     ┃
 ┃         GRAND MOBILE ULTRA          ┃
-┃                                     ┃
-┃    ⚡ 120 FPS + PING IMPROVED ⚡     ┃
-┃                                     ┃
-┃         MADE BY YUVRAJ             ┃
-┃     📲 TELEGRAM: @YUVRAJ           ┃
-┃                                     ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
     ]])
     
