@@ -1,6 +1,6 @@
 gg.setVisible(false)
 
-gg.alert("Wellcome ❤️ to Yuvraj 👿 English Script This script is totally free 🎉 so avoid scammers ☠️ my discord @yojashv.exe" ) 
+gg.alert("Wellcome ❤️ to Yojashv 👿 English Script This script is totally free 🎉 so avoid scammers ☠️ my discord @mr_traver." ) 
 
 --╔═══════════════════════════════════════════════════════════════════╗
 --║                                                                   ║
@@ -20,7 +20,7 @@ gg.alert("Wellcome ❤️ to Yuvraj 👿 English Script This script is totally f
 --║                                                                   ║
 --║                      W A R   A I M B O T                          ║
 --║                                                                   ║
---║                        CREATED BY YUVRAJ                          ║
+--║                        CREATED BY Yojashv                          ║
 --║                    TELEGRAM: @yojashv                             ║
 --║                                                                   ║
 --╚═══════════════════════════════════════════════════════════════════╝
@@ -34,11 +34,11 @@ gg.clearList()
 --╚═══════════════════════════════════════════════════════════════════╝
 
 function showSuccess() 
-    toast.success("✅ FEATURE ACTIVATED BY YUVRAJ ✨", 2) 
+    toast.success("✅ FEATURE ACTIVATED BY Yojashv ✨", 2) 
 end
 
 function showDisabled() 
-    toast.hint("⚠️ FEATURE DISABLED BY YUVRAJ ⚠️", 2) 
+    toast.hint("⚠️ FEATURE DISABLED BY Yojashv ⚠️", 2) 
 end
 
 function showError() 
@@ -95,7 +95,7 @@ gg.clearList()
 
 -- Toast functions
 function msg(s) 
-    gg.toast("💜 YUVRAJ ➤ "..s)
+    gg.toast("💜 Yojashv ➤ "..s)
 end
 
 function msgOff(s) 
@@ -598,7 +598,7 @@ function creditMenu()
     gg.alert([[
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                                     ┃
-┃     💜 YUVRAJ FPS BOOSTER 💜       ┃
+┃     💜 Yojashv FPS BOOSTER 💜       ┃
 ┃            ULTRA EDITION            ┃
 ┃                                     ┃
 ┃        🎮 GRAND MOBILE 🎮           ┃
@@ -608,9 +608,9 @@ function creditMenu()
 ┃     🧹 LAG REMOVER 🧹               ┃
 ┃     🎮 SMOOTH GAMEPLAY 🎮           ┃
 ┃                                     ┃
-┃     📲 TELEGRAM: @YUVRAJ          ┃
+┃     📲 TELEGRAM: @Yojashv          ┃
 ┃                                     ┃
-┃        MADE WITH 💜 BY YUVRAJ     ┃
+┃        MADE WITH 💜 BY Yojashv     ┃
 ┃                                     ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
     ]])
@@ -641,7 +641,7 @@ function FPSmenu()
     }, nil, [[
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                                     ┃
-┃       💜 YUVRAJ FPS BOOSTER 💜     ┃
+┃       💜 Yojashv FPS BOOSTER 💜     ┃
 ┃         GRAND MOBILE ULTRA          ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
     ]])
@@ -850,7 +850,7 @@ frzsl6 = "❌"
 frzsl7 = "❌"
 
 --╔═══════════════════════════════════════════════════════════════════╗
---║                    Yuvraj AIMBOT SYSTEM                           ║
+--║                    Yojashv AIMBOT SYSTEM                           ║
 --╚═══════════════════════════════════════════════════════════════════╝
 
 YuvrajAimbotRunning = false
@@ -902,7 +902,7 @@ function YuvrajStartAimbot()
     YuvrajAimbotRunning = true
     gg.setVisible(false)
     
-    toast.hint("╔══════════════════════════════════════════════════╗\n║     🎯 Yuvraj AIMBOT ACTIVATED 🎯              ║\n║     " .. YuvrajStrengthNames[YuvrajSelectedStrength] .. "     ║\n║     PRESS GG ICON TO STOP                        ║\n╚══════════════════════════════════════════════════╝", 4)
+    toast.hint("╔══════════════════════════════════════════════════╗\n║     🎯 Yojashv AIMBOT ACTIVATED 🎯              ║\n║     " .. YuvrajStrengthNames[YuvrajSelectedStrength] .. "     ║\n║     PRESS GG ICON TO STOP                        ║\n╚══════════════════════════════════════════════════╝", 4)
     
     local tick = 0
     while YuvrajAimbotRunning do
@@ -924,7 +924,7 @@ function YuvrajStartAimbot()
     
     YuvrajSmoothAimbotOff()
     gg.setVisible(true)
-    toast.hint("🛑 Yuvraj AIMBOT STOPPED 🛑")
+    toast.hint("🛑 Yojashv AIMBOT STOPPED 🛑")
     YuvrajAimbotRunning = false
     YuvrajAimMenu()
 end
@@ -1040,7 +1040,7 @@ function YuvrajAimMenu()
         "        🛑 STOP AIMBOT",
         "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
         "        🔙 BACK TO MAIN MENU"
-    }, nil, "Yuvraj BIZZ WAR  AIMBOT  VIP EDITION")
+    }, nil, "Yojashv BIZZ WAR  AIMBOT  VIP EDITION")
     
     if not choice then mainMenu() end
     
@@ -1272,7 +1272,7 @@ function playerMenu()
         "║        🌎 GRAVITY V2             ║" .. (graviqq == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
         "╚══════════════════════════════════╝",
         "🔙 RETURN TO MAIN MENU"
-    }, nil, "PLAYER MODS - Yuvraj")
+    }, nil, "PLAYER MODS - Yojashv")
     
     if not choice then mainMenu() end
     
@@ -1470,7 +1470,7 @@ function carMenu()
         "║        🫸 PUT ON WHEELS          ║" .. (carkoles1 == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
         "╚══════════════════════════════════╝",
         "🔙 RETURN TO MAIN MENU"
-    }, nil, "CAR MODS - Yuvraj")
+    }, nil, "CAR MODS - Yojashv")
     
     if not choice then mainMenu() end
     
@@ -1609,7 +1609,7 @@ function visualMenu()
         "║        👻 INVISIBLE WALLS        ║" .. (invwal == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
         "╚══════════════════════════════════╝",
         "🔙 RETURN TO MAIN MENU"
-    }, nil, "VISUAL MODS - Yuvraj")
+    }, nil, "VISUAL MODS - Yojashv")
     
     if not choice then mainMenu() end
     
@@ -1828,7 +1828,7 @@ function giveCustomWeapon()
 end
 
 function showWeaponIDs()
-    gg.alert("WEAPON IDs - Yuvraj\n║  1-Knife   2-Pistol   3-Deagle   4-M4   5-AK47        \n  6-MP5     7-Shotgun  8-Sniper  9-RPG   10-Minigun     \n")
+    gg.alert("WEAPON IDs - Yojashv\n║  1-Knife   2-Pistol   3-Deagle   4-M4   5-AK47        \n  6-MP5     7-Shotgun  8-Sniper  9-RPG   10-Minigun     \n")
     gunMenu()
 end
 
@@ -1851,7 +1851,7 @@ function antiReloadMenu()
         "║        🔫 MP5                    ║" .. (relompper == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
         "╚══════════════════════════════════╝",
         "🔙 RETURN TO WEAPON MENU"
-    }, nil, "ANTI RELOAD - Yuvraj")
+    }, nil, "ANTI RELOAD - Yojashv")
     
     if not choice then gunMenu() end
     if choice == 2 then toggleAntiReload("relodgper", "+200", 22)
@@ -1874,7 +1874,7 @@ function infiniteAmmoMenu()
         "║        🔫 MP5                    ║" .. (bmp5q == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
         "╚══════════════════════════════════╝",
         "🔙 RETURN TO WEAPON MENU"
-    }, nil, "INFINITE AMMO - Yuvraj")
+    }, nil, "INFINITE AMMO - Yojashv")
     
     if not choice then gunMenu() end
     if choice == 2 then toggleInfiniteAmmo("bdg", "+204")
@@ -1900,7 +1900,7 @@ function freezeSlotsMenu()
         "║        🔫 SHOTGUN                ║" .. (frzsl7 == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
         "╚══════════════════════════════════╝",
         "🔙 RETURN TO WEAPON MENU"
-    }, nil, "FREEZE SLOTS - Yuvraj")
+    }, nil, "FREEZE SLOTS - Yojashv")
     
     if not choice then gunMenu() end
     if choice == 2 then toggleFreezeSlot("frzsl1", "+192", 24, "+204")
@@ -1934,7 +1934,7 @@ function giveWeaponMenu()
         "║        ℹ️ WEAPON IDs             ║",
         "╚══════════════════════════════════╝",
         "🔙 RETURN TO WEAPON MENU"
-    }, nil, "GIVE WEAPON - Yuvraj")
+    }, nil, "GIVE WEAPON - Yojashv")
     
     if not choice then gunMenu() end
     if choice == 2 then giveWeapon("+192", 24, "+204")
@@ -1968,7 +1968,7 @@ function giveAmmoMenu()
         "║        🔫 SHOTGUN                ║",
         "╚══════════════════════════════════╝",
         "🔙 RETURN TO WEAPON MENU"
-    }, nil, "GIVE AMMO - Yuvraj")
+    }, nil, "GIVE AMMO - Yojashv")
     
     if not choice then gunMenu() end
     if choice == 2 then giveAmmo("+204")
@@ -2001,7 +2001,7 @@ function gunMenu()
         "║        ⚡➕ FIRE RATE + SPEED     ║" .. (alertr == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
         "╚══════════════════════════════════╝",
         "🔙 RETURN TO MAIN MENU"
-    }, nil, "WEAPON MODS - Yuvraj")
+    }, nil, "WEAPON MODS - Yojashv")
     
     if not choice then mainMenu() end
     
@@ -2139,7 +2139,7 @@ function managePointsMenu()
         "║        🗑️ CLEAR ALL POINTS       ║",
         "╚══════════════════════════════════╝",
         "🔙 BACK"
-    }, nil, "MANAGE POINTS - Yuvraj")
+    }, nil, "MANAGE POINTS - Yojashv")
     
     if not choice then return tpMenu() end
     
@@ -2195,7 +2195,7 @@ function viewSavedPoints()
     end
     list[#list + 1] = "🔙 BACK"
     
-    local q = gg.choice(list, nil, "SELECT POINT - Yuvraj")
+    local q = gg.choice(list, nil, "SELECT POINT - Yojashv")
     if not q or q == #list then return managePointsMenu() end
     
     local p = savedPoints[q]
@@ -2326,18 +2326,18 @@ function showLocations(locations, title)
     teleportByFootMenu()
 end
 
-function showPublicPlaces() showLocations(publicPlaces, "╔══════════════════════════════════════════════════╗\n║                PUBLIC PLACES - Yuvraj               ║\n╚══════════════════════════════════════════════════╝") end
-function showStations() showLocations(stations, "╔══════════════════════════════════════════════════╗\n║                  STATIONS - Yuvraj                  ║\n╚══════════════════════════════════════════════════╝") end
-function showParking() showLocations(parking, "╔══════════════════════════════════════════════════╗\n║               PARKING LOTS - Yuvraj                 ║\n╚══════════════════════════════════════════════════╝") end
-function showGovernment() showLocations(government, "╔══════════════════════════════════════════════════╗\n║               GOVERNMENT - Yuvraj                   ║\n╚══════════════════════════════════════════════════╝") end
-function showOCGs() showLocations(OCGs, "╔══════════════════════════════════════════════════╗\n║                OCGs - Yuvraj                    ║\n╚══════════════════════════════════════════════════╝") end
-function showStarterJobs() showLocations(starterJobs, "╔══════════════════════════════════════════════════╗\n║              STARTER JOBS - Yuvraj                  ║\n╚══════════════════════════════════════════════════╝") end
-function showJobs() showLocations(jobs, "╔══════════════════════════════════════════════════╗\n║                  JOBS - Yuvraj                      ║\n╚══════════════════════════════════════════════════╝") end
-function showEntertainment() showLocations(entertainment, "╔══════════════════════════════════════════════════╗\n║              ENTERTAINMENT - Yuvraj                 ║\n╚══════════════════════════════════════════════════╝") end
-function showHeliClubs() showLocations(heliClubs, "╔══════════════════════════════════════════════════╗\n║               HELI CLUBS - Yuvraj                   ║\n╚══════════════════════════════════════════════════╝") end
-function showBuyers() showLocations(buyers, "╔══════════════════════════════════════════════════╗\n║                 BUYERS - Yuvraj                     ║\n╚══════════════════════════════════════════════════╝") end
-function showBusinesses() showLocations(businesses, "╔══════════════════════════════════════════════════╗\n║               BUSINESSES - Yuvraj                   ║\n╚══════════════════════════════════════════════════╝") end
-function showQuarries() showLocations(quarries, "╔══════════════════════════════════════════════════╗\n║                QUARRIES - Yuvraj                    ║\n╚══════════════════════════════════════════════════╝") end
+function showPublicPlaces() showLocations(publicPlaces, "╔══════════════════════════════════════════════════╗\n║                PUBLIC PLACES - Yojashv               ║\n╚══════════════════════════════════════════════════╝") end
+function showStations() showLocations(stations, "╔══════════════════════════════════════════════════╗\n║                  STATIONS - Yojashv                  ║\n╚══════════════════════════════════════════════════╝") end
+function showParking() showLocations(parking, "╔══════════════════════════════════════════════════╗\n║               PARKING LOTS - Yojashv                 ║\n╚══════════════════════════════════════════════════╝") end
+function showGovernment() showLocations(government, "╔══════════════════════════════════════════════════╗\n║               GOVERNMENT - Yojashv                   ║\n╚══════════════════════════════════════════════════╝") end
+function showOCGs() showLocations(OCGs, "╔══════════════════════════════════════════════════╗\n║                OCGs - Yojashv                    ║\n╚══════════════════════════════════════════════════╝") end
+function showStarterJobs() showLocations(starterJobs, "╔══════════════════════════════════════════════════╗\n║              STARTER JOBS - Yojashv                  ║\n╚══════════════════════════════════════════════════╝") end
+function showJobs() showLocations(jobs, "╔══════════════════════════════════════════════════╗\n║                  JOBS - Yojashv                      ║\n╚══════════════════════════════════════════════════╝") end
+function showEntertainment() showLocations(entertainment, "╔══════════════════════════════════════════════════╗\n║              ENTERTAINMENT - Yojashv                 ║\n╚══════════════════════════════════════════════════╝") end
+function showHeliClubs() showLocations(heliClubs, "╔══════════════════════════════════════════════════╗\n║               HELI CLUBS - Yojashv                   ║\n╚══════════════════════════════════════════════════╝") end
+function showBuyers() showLocations(buyers, "╔══════════════════════════════════════════════════╗\n║                 BUYERS - Yojashv                     ║\n╚══════════════════════════════════════════════════╝") end
+function showBusinesses() showLocations(businesses, "╔══════════════════════════════════════════════════╗\n║               BUSINESSES - Yojashv                   ║\n╚══════════════════════════════════════════════════╝") end
+function showQuarries() showLocations(quarries, "╔══════════════════════════════════════════════════╗\n║                QUARRIES - Yojashv                    ║\n╚══════════════════════════════════════════════════╝") end
 
 function teleportByFootMenu()
     menuuuvis = 0
@@ -2358,7 +2358,7 @@ function teleportByFootMenu()
         "║        📍 MY POINTS              ║",
         "╚══════════════════════════════════╝",
         "🔙 BACK"
-    }, nil, "╔══════════════════════════════════════════════════╗\n║            TELEPORT BY FOOT - Yuvraj                 ║\n╚══════════════════════════════════════════════════╝")
+    }, nil, "╔══════════════════════════════════════════════════╗\n║            TELEPORT BY FOOT - Yojashv                 ║\n╚══════════════════════════════════════════════════╝")
     
     if not choice then tpMenu() end
     if choice == 2 then showPublicPlaces()
@@ -2389,7 +2389,7 @@ function tpMenu()
         "║        💾 SAVE/MANAGE POINTS     ║",
         "╚══════════════════════════════════╝",
         "🔙 BACK"
-    }, nil, "TELEPORT - Yuvraj")
+    }, nil, "TELEPORT - Yojashv")
     
     if not choice then mainMenu() end
     if choice == 2 then teleportByCoords()
@@ -2508,7 +2508,7 @@ function yuvrajMartingaleCalculatorRoute()
     end
     
     -- Dynamic table calculation variables
-    local matrixText = "📊 YUVRAJ AUTOMATIC CASINO ROUTE 📊\n"
+    local matrixText = "📊 Yojashv AUTOMATIC CASINO ROUTE 📊\n"
     matrixText = matrixText .. "━━━━━━━━━━━━━━━━━━━━━━━━\n"
     matrixText = matrixText .. "Your Balance: " .. totalBalance .. " ₽\n"
     matrixText = matrixText .. "Starting Bet: " .. currentBet .. " ₽\n"
@@ -2563,7 +2563,7 @@ function casinoMenu()
         "║     📊 MARTINGALE CALCULATOR     ║",
         "╚══════════════════════════════════╝",
         "🔙 RETURN TO MAIN MENU"
-    }, nil, "CASINO HACKS - YUVRAJ")
+    }, nil, "CASINO HACKS - Yojashv")
     
     if not choice then return mainMenu() end
     
@@ -2675,7 +2675,7 @@ function runYuvrajMacro()
     if speedMultiplier <= 0 then speedMultiplier = 1 end
     
     gg.setVisible(false)
-    toast.success("🤖 YUVRAJ AUTOMATION BOT RUNNING!\nSpeed: " .. speedMultiplier .. "x\nHold GG Icon to cancel.", 4)
+    toast.success("🤖 Yojashv AUTOMATION BOT RUNNING!\nSpeed: " .. speedMultiplier .. "x\nHold GG Icon to cancel.", 4)
     gg.sleep(1500)
     
     local lastPointTime = 0
@@ -2714,7 +2714,7 @@ function automationMenu()
         "║        ▶️ RUN RECORDED BOT SPEED ║",
         "╚══════════════════════════════════╝",
         "🔙 RETURN TO MAIN MENU"
-    }, nil, "╔══════════════════════════════════════════════════╗\n║             AUTOMATION BOT - YUVRAJ              ║\n╚══════════════════════════════════════════════════╝")
+    }, nil, "╔══════════════════════════════════════════════════╗\n║             AUTOMATION BOT - Yojashv              ║\n╚══════════════════════════════════════════════════╝")
     
     if not choice then return mainMenu() end
     
@@ -2735,19 +2735,19 @@ end
 function devMenu()
     local choice = gg.choice({
         "╔══════════════════════════════════╗",
-        "║        📺 YOUTUBE: @Yuvraj       ║",
-        "║        💬 TELEGRAM: @Yuvraj      ║",
+        "║        📺 YOUTUBE: @Yojashv       ║",
+        "║        💬 TELEGRAM: @Yojashv      ║",
         "╚══════════════════════════════════╝",
         "🔙 BACK"
-    }, nil, "DEVELOPER - Yuvraj")
+    }, nil, "DEVELOPER - Yojashv")
     
     if not choice then mainMenu() end
     if choice == 2 then
-        gg.copyText("https://youtube.com/@Yuvraj")
-        gg.goURL("https://youtube.com/@Yuvraj")
+        gg.copyText("https://youtube.com/@Yojashv")
+        gg.goURL("https://youtube.com/@Yojashv")
     elseif choice == 3 then
-        gg.copyText("https://t.me/Yuvraj")
-        gg.goURL("https://t.me/Yuvraj")
+        gg.copyText("https://t.me/Yojashv")
+        gg.goURL("https://t.me/Yojashv")
     elseif choice == 5 then
         mainMenu()
     end
@@ -2762,7 +2762,7 @@ function supportMenu()
         "║        UQXXXXXXXXXXXXXXXXXX      ║",
         "╚══════════════════════════════════╝",
         "🔙 BACK"
-    }, nil, "SUPPORT - Yuvraj")
+    }, nil, "SUPPORT - Yojashv")
     
     if not choice then mainMenu()
     elseif choice == 5 then mainMenu()
@@ -2777,7 +2777,7 @@ function exitScript()
     end
     print("╔══════════════════════════════════════════════════╗")
     print("║                                                  ║")
-    print("║          GRAND MOBILE SCRIPT - Yuvraj            ║")
+    print("║          GRAND MOBILE SCRIPT - Yojashv            ║")
     print("║                    EXITING...                    ║")
     print("║                                                  ║")
     print("╚══════════════════════════════════════════════════╝")
@@ -2801,14 +2801,14 @@ function mainMenu()
         "║        🕒 FPS BOOST              ║",
         "║        📍 TELEPORT               ║",
         "║        🎰 CASINO Hacks           ║",
-        "║        🎯 AIMBOT Yuvraj          ║",
+        "║        🎯 AIMBOT Yojashv          ║",
         "║        🤖 JOB AUTOMATION BOT     ║",
         "║        👑 DEVELOPER              ║",
         "║        💝 SUPPORT                ║",
         "║                                  ║",
         "║        ❌ EXIT                   ║",
         "╚══════════════════════════════════╝"
-    }, nil, "✨💫 GRAND MOBILE SCRIPT - Yuvraj - VIP EDITION ✨💫")
+    }, nil, "✨💫 GRAND MOBILE SCRIPT - Yojashv - VIP EDITION ✨💫")
     
     if not choice then return end
     
@@ -2833,7 +2833,7 @@ end
 --║                      SCRIPT START                                 ║
 --╚═══════════════════════════════════════════════════════════════════╝
 
-toast.success("✨💫 Yuvraj BIZZ WAR SCRIPT LOADED ✨💫", 4)
+toast.success("✨💫 Yojashv BIZZ WAR SCRIPT LOADED ✨💫", 4)
 gg.sleep(1500)
 
 while true do
