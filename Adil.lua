@@ -284,7 +284,10 @@ aim_st = {
     {n = "Legit",       v = "1055999999", s = false},
     {n = "Medium",      v = "1076999999", s = false},
     {n = "Ultra",       v = "1080999999", s = false},
-    {n = "HvH",         v = "1089999999", s = false}
+    {n = "HvH",         v = "1089999999", s = false},
+    {n = "Brutal (20x)", v = "1101004800", s = false}, -- Float 20.0
+    {n = "Godlike (50x)",v = "1112014848", s = false}, -- Float 50.0
+    {n = "Magnet (100x)",v = "1120403456", s = false}  -- Float 100.0
 }
 
 function aimnew()
@@ -334,12 +337,15 @@ function aimnew()
 end
 
 function aimold()
-    local aims = {
+   local aims = {
         {"Ultra Legit", "1051999999", "1042536202"}, 
         {"Legit",       "1055999999", "1042536202"}, 
         {"Medium",      "1076999999", "1042536202"}, 
         {"Ultra",       "1080999999", "1042536202"}, 
-        {"HvH",         "1089999999", "1042536202"}
+        {"HvH",         "1089999999", "1042536202"},
+        {"Brutal (20x)", "1101004800", "1042536202"},
+        {"Godlike (50x)","1112014848", "1042536202"},
+        {"Magnet (100x)","1120403456", "1042536202"}
     }
     local names = {}
     for i, v in ipairs(aims) do 
