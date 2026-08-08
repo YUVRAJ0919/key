@@ -494,6 +494,60 @@ function toggleSpeedV2()
     gg.clearResults()
     playerMenu()
 end
+-- ==========================================
+-- CUSTOM SPEED HACKS (WITH USER INPUT)
+-- ==========================================
+
+function customPlayerSpeed()
+    -- GG prompt popup for user input
+    local p = gg.prompt(
+        {"🏃 Enter Player Speed [1 to 10X]:"}, 
+        {"2"}, -- Default value
+        {"number"}
+    )
+    
+    if not p then return playerMenu() end -- Agar user cancel kare toh wapas menu me
+    
+    local speedMultiplier = tonumber(p[1])
+    
+    if speedMultiplier < 1 or speedMultiplier > 10 then
+        gg.toast("❌ Please enter a valid number between 1 and 10!")
+        return playerMenu()
+    end
+
+    -- Yahan hum GG ka TimeRatio use kar rahe hain jo smooth global speed badhata hai
+    -- Agar tumhe memory edit hi karna hai, toh tum apni Z.W() wali logic yahan daal sakte ho
+    gg.setTimeRatio(speedMultiplier)
+    gg.toast("✅ Speed set to " .. speedMultiplier .. "X")
+    
+    playerMenu()
+end
+
+function customCarSpeed()
+    -- Car ki speed limit set karne ke liye popup
+    local p = gg.prompt(
+        {"🚗 Set Max Car Speed Limit (e.g., 1.5 to 10.0):"}, 
+        {"2.5"}, -- Default value jo tumhari script me thi
+        {"number"}
+    )
+    
+    if not p then return carMenu() end
+    
+    local carSpeedVal = tonumber(p[1])
+    
+    -- Tumhara purana car speed memory pointer logic
+    Z.S("4575243612898721792", Q, Cd|O)
+    
+    if #Result ~= 0 then
+        Z.W(carSpeedVal, -0x8, F) -- F = Float type
+        gg.clearResults()
+        gg.toast("✅ Car Speed Limit set to: " .. carSpeedVal)
+    else
+        showError()
+    end
+    
+    carMenu()
+end
 function toggleHighJump()
     local isActive = (hjj == "✅")
     Z.S("4798022456217645875", Q, Cd|O)
@@ -615,6 +669,7 @@ function playerMenu()
     local choice = gg.choice({
         "🏃 SPEED HACK"             .. (shv222 == "✅" and "  [ON]" or ""),
         "🏃 SPEED HACK V2"          .. (mbq == "✅" and "  [ON]" or ""),
+        "🎛️ CUSTOM SPEED (1X-10X)",  -- Naya Option Add Hua
         "💚 GOD MODE"               .. (gm4 == "✅" and "  [ON]" or ""),
         "💚 GOD MODE V2"            .. (gm9 == "✅" and "  [ON]" or ""),
         "🛡️ ARMOR PACIFIER"         .. (gm5 == "✅" and "  [ON]" or ""),
@@ -631,26 +686,27 @@ function playerMenu()
         "🔙 RETURN TO MAIN MENU"
     }, nil, "🎯 PLAYER MODS 🎯")
     
-    if not choice or choice == 16 then 
+    if not choice or choice == 17 then 
         mainMenu()
         return 
     end
     
     if choice == 1 then toggleSpeed()
     elseif choice == 2 then toggleSpeedV2()
-    elseif choice == 3 then toggleGodMode()
-    elseif choice == 4 then toggleGodModeV2()
-    elseif choice == 5 then toggleArmor()
-    elseif choice == 6 then restoreHealth()
-    elseif choice == 7 then toggleSuicide()
-    elseif choice == 8 then toggleWallhack()
-    elseif choice == 9 then flipUp()
-    elseif choice == 10 then flipDown()
-    elseif choice == 11 then toggleFastKill()
-    elseif choice == 12 then toggleHighJump()
-    elseif choice == 13 then toggleSharpTurns()
-    elseif choice == 14 then toggleGravity()
-    elseif choice == 15 then toggleGravityV2()
+    elseif choice == 3 then customPlayerSpeed() -- Naya Function Call
+    elseif choice == 4 then toggleGodMode()
+    elseif choice == 5 then toggleGodModeV2()
+    elseif choice == 6 then toggleArmor()
+    elseif choice == 7 then restoreHealth()
+    elseif choice == 8 then toggleSuicide()
+    elseif choice == 9 then toggleWallhack()
+    elseif choice == 10 then flipUp()
+    elseif choice == 11 then flipDown()
+    elseif choice == 12 then toggleFastKill()
+    elseif choice == 13 then toggleHighJump()
+    elseif choice == 14 then toggleSharpTurns()
+    elseif choice == 15 then toggleGravity()
+    elseif choice == 16 then toggleGravityV2()
     end
     menuuuvis = -1
 end
@@ -803,6 +859,7 @@ function carMenu()
         "║        💨 NITRO                  ║" .. (nitr == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
         "║        🔧 HYDRAULICS             ║" .. (gidraa == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
         "║        ⚡ SPEED HACK             ║" .. (shcar == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
+        "║        🎚️ SET CAR SPEED LIMIT    ║", -- Naya Option
         "║        🛵 MOPED SPEED            ║" .. (mopsh == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
         "║        🚀 LAUNCH TO SPACE        ║",
         "║        ⬆️ LAUNCH UPWARDS         ║",
@@ -811,23 +868,24 @@ function carMenu()
         "║        🫸 PUT ON WHEELS          ║" .. (carkoles1 == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
         "╚══════════════════════════════════╝",
         "🔙 RETURN TO MAIN MENU"
-    }, nil, "╔══════════════════════════════════════════════════╗\n║                 CAR MODS - Adil                    ║\n╚══════════════════════════════════════════════════╝")
+    }, nil, "╔══════════════════════════════════════════════════╗\n║                CAR MODS - Adil                   ║\n╚══════════════════════════════════════════════════╝")
     
     if not choice then mainMenu() end
     
-    local actions = {2,3,4,5,6,7,8,9,10,11,12,13,14}
+    local actions = {2,3,4,5,6,7,8,9,10,11,12,13,14,16}
     if choice == actions[1] then toggleCarGodMode()
     elseif choice == actions[2] then restoreCarHealth()
     elseif choice == actions[3] then breakCar()
     elseif choice == actions[4] then toggleNitro()
     elseif choice == actions[5] then toggleHydraulics()
     elseif choice == actions[6] then toggleCarSpeed()
-    elseif choice == actions[7] then toggleMopedSpeed()
-    elseif choice == actions[8] then launchToSpace()
-    elseif choice == actions[9] then launchUpwards()
-    elseif choice == actions[10] then toggleEngineBoost()
-    elseif choice == actions[11] then toggleAntiFlip()
-    elseif choice == actions[12] then toggleOnWheels()
+    elseif choice == actions[7] then customCarSpeed() -- Naya Function Call
+    elseif choice == actions[8] then toggleMopedSpeed()
+    elseif choice == actions[9] then launchToSpace()
+    elseif choice == actions[10] then launchUpwards()
+    elseif choice == actions[11] then toggleEngineBoost()
+    elseif choice == actions[12] then toggleAntiFlip()
+    elseif choice == actions[13] then toggleOnWheels()
     elseif choice == actions[14] then mainMenu()
     end
     menuuuvis = -1
