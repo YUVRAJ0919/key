@@ -559,6 +559,105 @@ function toggleHighJump()
     playerMenu()
 end
 
+-- ==========================================
+-- NEW ADDED FEATURES (SIZE, TANK, AUTO-KILL)
+-- ==========================================
+
+function setPlayerSize()
+    -- Prompt se poochega ki kitna bada/chota hona hai
+    local p = gg.prompt(
+        {"🧍 Enter Player Size (0.5 = Mini, 2.0 = Big, 5.0 = Giant):"}, 
+        {"2.0"}, 
+        {"number"}
+    )
+    if not p then return playerMenu() end
+    
+    local size = tonumber(p[1])
+    
+    -- Player Base Search (Tumhare Teleport logic se uthaya)
+    Z.S("4575657250219098112", Q, Ca|O)
+    if #Result ~= 0 then
+        -- Scale offsets (Coordinates ke turant baad hote hain)
+        setvalue(Z.A(nil, 144), size, F) -- X Scale
+        setvalue(Z.A(nil, 148), size, F) -- Y Scale
+        setvalue(Z.A(nil, 152), size, F) -- Z Scale
+        gg.toast("✅ Player Size set to " .. size)
+    else
+        showError()
+    end
+    gg.clearResults()
+    playerMenu()
+end
+
+-- Global variable Tank mode ke liye
+tankmod = "❌"
+function toggleTankMode()
+    local isActive = (tankmod == "✅")
+    Z.S("4812096201845506048", Q, Ca|Cd|O)
+    
+    if #Result ~= 0 then
+        -- Car Mass (Weight) ko 99999 kar dega, gaadi bulldozer ban jayegi
+        Z.W(not isActive and 99999.0 or 1500.0, 0x58, F) 
+        
+        tankmod = not isActive and "✅" or "❌"
+        if tankmod == "✅" then 
+            gg.toast("✅ TANK MODE ON (BULLDOZER)") 
+        else 
+            gg.toast("❌ TANK MODE OFF") 
+        end
+    else
+        showError()
+    end
+    gg.clearResults()
+    carMenu()
+end
+
+function autoKillAll()
+    gg.toast("⚠️ MAKE SURE 'FAST KILL' IS ON!")
+    gg.sleep(1500)
+
+    local points = {}
+    -- Enemy/Markers search (Tumhare ESP/Teleport logic se)
+    for _, q in ipairs({"13950255104", "5360320512"}) do
+        if #points == 0 then
+            Z.S(q, Q, O)
+            if Result then
+                for _, v in ipairs(Result) do
+                    local vals = gg.getValues({
+                        {address = v.address + 32, flags = F},
+                        {address = v.address + 36, flags = F},
+                        {address = v.address + 40, flags = F},
+                        {address = v.address + 48, flags = F}
+                    })
+                    local x, y, z, active = vals[1].value, vals[2].value, vals[3].value, vals[4].value
+                    -- Sirf valid zinda players filter karega
+                    if x ~= 0 and y ~= 0 and active == 1 then
+                        table.insert(points, {x, y, z})
+                    end
+                end
+            end
+        end
+    end
+
+    if #points == 0 then
+        gg.toast("❌ No Enemies Found Nearby!")
+        return playerMenu()
+    end
+
+    gg.toast("🔪 AUTO-KILL STARTED! Found " .. #points .. " Targets")
+    
+    -- Ek-ek karke sabke peeche teleport hoga (2 second delay ke sath)
+    for i, target in ipairs(points) do
+        -- Enemy ke Y coordinate me thoda minus kiya taaki uske theek piche spawn ho
+        doTeleport(target[1], target[2] - 1.5, target[3]) 
+        gg.toast("🎯 Target " .. i .. " / " .. #points)
+        gg.sleep(2000) -- 2 Second rukega taaki Fast Kill target ko mar sake
+    end
+    
+    gg.toast("✅ Auto-Kill Complete!")
+    playerMenu()
+end
+
 function toggleWallhack()
     local isActive = (walg == "✅")
     Z.S(isActive and "1114767360" or "1114636288", Q, Ca|O|Cd)
@@ -669,7 +768,9 @@ function playerMenu()
     local choice = gg.choice({
         "🏃 SPEED HACK"             .. (shv222 == "✅" and "  [ON]" or ""),
         "🏃 SPEED HACK V2"          .. (mbq == "✅" and "  [ON]" or ""),
-        "🎛️ CUSTOM SPEED (1X-10X)",  -- Naya Option Add Hua
+        "🎛️ CUSTOM SPEED (1X-10X)",  
+        "🦍 PLAYER SIZE MODIFIER",   -- Naya: Size Modifier
+        "🔪 AUTO-KILL ALL",          -- Naya: Auto Kill All
         "💚 GOD MODE"               .. (gm4 == "✅" and "  [ON]" or ""),
         "💚 GOD MODE V2"            .. (gm9 == "✅" and "  [ON]" or ""),
         "🛡️ ARMOR PACIFIER"         .. (gm5 == "✅" and "  [ON]" or ""),
@@ -686,27 +787,29 @@ function playerMenu()
         "🔙 RETURN TO MAIN MENU"
     }, nil, "🎯 PLAYER MODS 🎯")
     
-    if not choice or choice == 17 then 
+    if not choice or choice == 19 then 
         mainMenu()
         return 
     end
     
     if choice == 1 then toggleSpeed()
     elseif choice == 2 then toggleSpeedV2()
-    elseif choice == 3 then customPlayerSpeed() -- Naya Function Call
-    elseif choice == 4 then toggleGodMode()
-    elseif choice == 5 then toggleGodModeV2()
-    elseif choice == 6 then toggleArmor()
-    elseif choice == 7 then restoreHealth()
-    elseif choice == 8 then toggleSuicide()
-    elseif choice == 9 then toggleWallhack()
-    elseif choice == 10 then flipUp()
-    elseif choice == 11 then flipDown()
-    elseif choice == 12 then toggleFastKill()
-    elseif choice == 13 then toggleHighJump()
-    elseif choice == 14 then toggleSharpTurns()
-    elseif choice == 15 then toggleGravity()
-    elseif choice == 16 then toggleGravityV2()
+    elseif choice == 3 then customPlayerSpeed() 
+    elseif choice == 4 then setPlayerSize()     -- Attach: Size
+    elseif choice == 5 then autoKillAll()       -- Attach: Auto Kill
+    elseif choice == 6 then toggleGodMode()
+    elseif choice == 7 then toggleGodModeV2()
+    elseif choice == 8 then toggleArmor()
+    elseif choice == 9 then restoreHealth()
+    elseif choice == 10 then toggleSuicide()
+    elseif choice == 11 then toggleWallhack()
+    elseif choice == 12 then flipUp()
+    elseif choice == 13 then flipDown()
+    elseif choice == 14 then toggleFastKill()
+    elseif choice == 15 then toggleHighJump()
+    elseif choice == 16 then toggleSharpTurns()
+    elseif choice == 17 then toggleGravity()
+    elseif choice == 18 then toggleGravityV2()
     end
     menuuuvis = -1
 end
@@ -859,7 +962,8 @@ function carMenu()
         "║        💨 NITRO                  ║" .. (nitr == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
         "║        🔧 HYDRAULICS             ║" .. (gidraa == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
         "║        ⚡ SPEED HACK             ║" .. (shcar == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🎚️ SET CAR SPEED LIMIT    ║", -- Naya Option
+        "║        🎚️ SET CAR SPEED LIMIT    ║",
+        "║        🚜 TANK / BULLDOZER MODE  ║" .. (tankmod == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"), -- Naya option
         "║        🛵 MOPED SPEED            ║" .. (mopsh == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
         "║        🚀 LAUNCH TO SPACE        ║",
         "║        ⬆️ LAUNCH UPWARDS         ║",
@@ -872,21 +976,22 @@ function carMenu()
     
     if not choice then mainMenu() end
     
-    local actions = {2,3,4,5,6,7,8,9,10,11,12,13,14,16}
+    local actions = {2,3,4,5,6,7,8,9,10,11,12,13,14,15,17}
     if choice == actions[1] then toggleCarGodMode()
     elseif choice == actions[2] then restoreCarHealth()
     elseif choice == actions[3] then breakCar()
     elseif choice == actions[4] then toggleNitro()
     elseif choice == actions[5] then toggleHydraulics()
     elseif choice == actions[6] then toggleCarSpeed()
-    elseif choice == actions[7] then customCarSpeed() -- Naya Function Call
-    elseif choice == actions[8] then toggleMopedSpeed()
-    elseif choice == actions[9] then launchToSpace()
-    elseif choice == actions[10] then launchUpwards()
-    elseif choice == actions[11] then toggleEngineBoost()
-    elseif choice == actions[12] then toggleAntiFlip()
-    elseif choice == actions[13] then toggleOnWheels()
-    elseif choice == actions[14] then mainMenu()
+    elseif choice == actions[7] then customCarSpeed() 
+    elseif choice == actions[8] then toggleTankMode()     -- Attach: Tank mode
+    elseif choice == actions[9] then toggleMopedSpeed()
+    elseif choice == actions[10] then launchToSpace()
+    elseif choice == actions[11] then launchUpwards()
+    elseif choice == actions[12] then toggleEngineBoost()
+    elseif choice == actions[13] then toggleAntiFlip()
+    elseif choice == actions[14] then toggleOnWheels()
+    elseif choice == actions[15] then mainMenu()
     end
     menuuuvis = -1
 end
