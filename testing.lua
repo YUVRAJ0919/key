@@ -3,7 +3,7 @@
 -- ==========================================
 
 -- Yahan apni secret key set karo. Access block karna ho to isko change kar dena.
-local correct_key = "Comotozee" 
+local correct_key = "Sex" 
 
 -- User se key maangna
 local input = gg.prompt({"🗝️ Enter Key to access the script:"}, {[1]=""}, {"text"})
