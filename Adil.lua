@@ -178,8 +178,12 @@ function Z.A(varName, offset, baseAddr)
     return targetAddr
 end
 
+-- ==========================================
+-- FIXED HOOK PLAYER ENGINE
+-- ==========================================
 function hookPLAYER(q1w, w2e, e3r, r4t)
     Z.S("100.14399719238", F, Ca|O)
+    
     if not Result or #Result == 0 then
         showError()
         return false
@@ -187,7 +191,17 @@ function hookPLAYER(q1w, w2e, e3r, r4t)
     
     local off = tonumber(q1w) or 0
     for i, v in ipairs(Result) do
-        setvalue(v.address + off, e3r, w2e, r4t or false)
+        local val = e3r
+        
+        -- THE BUG FIX: Agar Infinite Ammo ne "" (empty string) bheja hai, 
+        -- toh game memory se current ammo count read karke usko freeze karega!
+        if val == "" then
+            local t = {{address = v.address + off, flags = w2e}}
+            t = gg.getValues(t)
+            val = t[1].value
+        end
+        
+        setvalue(v.address + off, val, w2e, r4t or false)
     end
     
     gg.clearResults()
@@ -279,15 +293,15 @@ function TOG(state)
 end
 
 -- Table defining the new aim options (Name 'n', Value 'v', State 's')
+-- Table defining the new aim options (Name 'n', Value 'v', State 's')
 aim_st = {
     {n = "Ultra Legit", v = "1051999999", s = false},
     {n = "Legit",       v = "1055999999", s = false},
     {n = "Medium",      v = "1076999999", s = false},
     {n = "Ultra",       v = "1080999999", s = false},
     {n = "HvH",         v = "1089999999", s = false},
-    {n = "Brutal (20x)", v = "1101004800", s = false}, -- Float 20.0
-    {n = "Godlike (50x)",v = "1112014848", s = false}, -- Float 50.0
-    {n = "Magnet (100x)",v = "1120403456", s = false}  -- Float 100.0
+    {n = "Brutal (Safe)", v = "1092616192", s = false}, -- Float 10.0 limit test
+    {n = "Godlike (Safe)",v = "1094713344", s = false}  -- Float 12.0 limit test
 }
 
 function aimnew()
@@ -337,15 +351,14 @@ function aimnew()
 end
 
 function aimold()
-   local aims = {
+    local aims = {
         {"Ultra Legit", "1051999999", "1042536202"}, 
         {"Legit",       "1055999999", "1042536202"}, 
         {"Medium",      "1076999999", "1042536202"}, 
         {"Ultra",       "1080999999", "1042536202"}, 
         {"HvH",         "1089999999", "1042536202"},
-        {"Brutal (20x)", "1101004800", "1042536202"},
-        {"Godlike (50x)","1112014848", "1042536202"},
-        {"Magnet (100x)","1120403456", "1042536202"}
+        {"Brutal (Safe)", "1092616192", "1042536202"},
+        {"Godlike (Safe)","1094713344", "1042536202"}
     }
     local names = {}
     for i, v in ipairs(aims) do 
@@ -521,9 +534,8 @@ function customPlayerSpeed()
         return playerMenu()
     end
 
-    -- Yahan hum GG ka TimeRatio use kar rahe hain jo smooth global speed badhata hai
-    -- Agar tumhe memory edit hi karna hai, toh tum apni Z.W() wali logic yahan daal sakte ho
-    gg.setTimeRatio(speedMultiplier)
+    -- Yahan function name fix kar diya gaya hai (setSpeed)
+    gg.setSpeed(speedMultiplier)
     gg.toast("✅ Speed set to " .. speedMultiplier .. "X")
     
     playerMenu()
@@ -597,25 +609,46 @@ end
 
 -- Global variable Tank mode ke liye
 tankmod = "❌"
+-- ==========================================
+-- CUSTOM TANK / BULLDOZER MODE
+-- ==========================================
 function toggleTankMode()
     local isActive = (tankmod == "✅")
-    Z.S("4812096201845506048", Q, Ca|Cd|O)
     
-    if #Result ~= 0 then
-        -- Car Mass (Weight) ko 99999 kar dega, gaadi bulldozer ban jayegi
-        Z.W(not isActive and 99999.0 or 1500.0, 0x58, F) 
+    if not isActive then
+        -- Jab ON kar rahe hain toh prompt aayega
+        local p = gg.prompt(
+            {"🚜 Enter Car Weight (Normal = 1500):\nTip: Try 2000, 2500, or 3000. Agar gaadi dhase, toh value thodi kam kar lena."}, 
+            {"2500"}, 
+            {"number"}
+        )
+        if not p then return carMenu() end
         
-        tankmod = not isActive and "✅" or "❌"
-        if tankmod == "✅" then 
-            gg.toast("✅ TANK MODE ON (BULLDOZER)") 
-        else 
-            gg.toast("❌ TANK MODE OFF") 
+        local massVal = tonumber(p[1])
+        
+        Z.S("4812096201845506048", Q, Ca|Cd|O)
+        if #Result ~= 0 then
+            Z.W(massVal, 0x58, F) 
+            tankmod = "✅"
+            gg.toast("✅ TANK MODE ON (Weight: " .. massVal .. ")")
+        else
+            showError()
         end
     else
-        showError()
+        -- Jab OFF kar rahe hain toh wapas default 1500 kar dega
+        Z.S("4812096201845506048", Q, Ca|Cd|O)
+        if #Result ~= 0 then
+            Z.W(1500.0, 0x58, F) 
+            tankmod = "❌"
+            gg.toast("❌ TANK MODE OFF")
+        else
+            showError()
+        end
     end
+    
     gg.clearResults()
     carMenu()
+end
 end
 
 function autoKillAll()
@@ -678,20 +711,35 @@ function toggleWallhack()
     playerMenu()
 end
 
+-- ==========================================
+-- ONE-HIT FAST KILL (UPDATED)
+-- ==========================================
 function toggleFastKill()
     local isActive = (fastkil == "✅")
-    Z.S(isActive and "4489188110505082880" or "9187343240761165228", Q, Ca|O|Cd)
+    
+    -- Weapon / Melee Base Pointer Search
+    Z.S("4584664420663165927", Q, Ca|O|Cd)
+    
     if #Result ~= 0 then
-        gg.editAll(isActive and "9187343240761165228" or "4489188110505082880", Q)
-        Z.S(isActive and "4489188110499840000" or "4489188110487257088", Q, Ca|O|Cd)
-        if #Result ~= 0 then
-            gg.editAll(isActive and "4489188110487257088" or "4489188110499840000", Q)
+        -- Game engine me Damage Float offsets usually 32 (0x20) aur 36 (0x24) par hote hain
+        -- Agar pehle se ON hai (isActive = true), toh normal damage 25.0 par wapas layega
+        -- Agar OFF hai, toh One-Hit Kill 99999.0 damage set karega
+        
+        Z.W(not isActive and 99999.0 or 25.0, 32, F)
+        Z.W(not isActive and 99999.0 or 25.0, 36, F)
+        
+        fastkil = not isActive and "✅" or "❌"
+        
+        if fastkil == "✅" then 
+            gg.toast("✅ FAST KILL (1-HIT KO) ACTIVATED") 
+        else 
+            gg.toast("❌ FAST KILL DEACTIVATED") 
         end
-        fastkil = isActive and "❌" or "✅"
-        if fastkil == "✅" then showSuccess() else showDisabled() end
     else
-        showError()
+        -- Fallback: Agar memory nahi mili
+        gg.toast("❌ Error: Weapon/Fist Base Not Found! Hath me weapon pakdo ya unequip karo.")
     end
+    
     gg.clearResults()
     playerMenu()
 end
@@ -825,12 +873,28 @@ end
 --╚═══════════════════════════════════════════════════════════════════╝
 
 function toggleCarGodMode()
-    local oldState = gmcarchik == "✅"
+    local isActive = (gmcarchik == "✅")
+    
+    -- Agar ON tha aur ab OFF kar rahe hain, toh frozen memory list ko clear karna hoga
+    if isActive then gg.clearList() end 
+    
     Z.S("4812096201845506048", Q, Ca|Cd|O)
-    Z.W(oldState and 999999 or 1000, 0x5DC, F)
+    
+    if #Result ~= 0 then
+        -- Z.W function me 4th parameter "not isActive" bheja gaya hai value freeze karne ke liye
+        Z.W(isActive and 1000.0 or 999999.0, 0x5DC, F, not isActive)
+        
+        gmcarchik = isActive and "❌" or "✅"
+        if gmcarchik == "✅" then 
+            gg.toast("✅ CAR GOD MODE ACTIVATED") 
+        else 
+            gg.toast("❌ CAR GOD MODE DEACTIVATED") 
+        end
+    else
+        showError()
+    end
+    
     gg.clearResults()
-    gmcarchik = oldState and "✅" or "❌"
-    if oldState then showSuccess() else showDisabled() end
     carMenu()
 end
 
@@ -908,6 +972,170 @@ function toggleEngineBoost()
     carMenu()
 end
 
+-- ==========================================
+-- 🚗 ULTIMATE CAR TELEPORT SYSTEM (3 METHODS)
+-- ==========================================
+
+myCarAddress = nil -- Global variable car ka address save karne ke liye
+
+-- 🟢 METHOD 1: Aage-Peeche (Movement Based)
+function setupCarMethod1()
+    gg.toast("🛑 Gaadi rok do...")
+    gg.sleep(1000)
+    
+    local px1, py1 = getCurrentCoords()
+    if not px1 then return tpMenu() end
+    
+    gg.alert("Step 1 Complete!\n\nAb gaadi ko thoda aage chalao (2-3 second) aur rok kar OK dabao.")
+    
+    local px2, py2 = getCurrentCoords()
+    gg.toast("🔍 Scanning Movement...")
+    
+    gg.clearResults()
+    gg.setRanges(gg.REGION_C_ALLOC | gg.REGION_OTHER)
+    -- Jo naye coordinates ban gaye hain, unko search karega
+    gg.searchNumber(tostring(px2 - 2) .. "~" .. tostring(px2 + 2), gg.TYPE_FLOAT)
+    
+    if gg.getResultCount() > 0 then
+        local res = gg.getResults(10)
+        myCarAddress = res[1].address -- First result utha lega
+        gg.toast("✅ SETUP 1 SUCCESS! Car Locked.")
+    else
+        gg.toast("❌ SETUP 1 FAIL: Car detect nahi hui.")
+    end
+    gg.clearResults()
+    carTeleportMenu()
+end
+
+-- 🟡 METHOD 2: Specific Location (Hardcoded)
+function setupCarMethod2()
+    local choice = gg.choice({
+        "🏦 Arzamas Bank (Bahar park karo)",
+        "🎰 Casino (Main gate ke paas)",
+        "🔙 BACK"
+    }, nil, "Gaadi ko inme se ek jagah khadi karo aur select karo:")
+    
+    if not choice or choice == 3 then return carTeleportMenu() end
+    
+    local targetX, targetY
+    if choice == 1 then targetX, targetY = -143, 593 end -- Arzamas Bank Coords
+    if choice == 2 then targetX, targetY = 327, 2762 end -- Casino Coords
+    
+    gg.clearResults()
+    gg.setRanges(gg.REGION_C_ALLOC | gg.REGION_OTHER)
+    gg.toast("🔍 Searching Location...")
+    gg.searchNumber(tostring(targetX - 10) .. "~" .. tostring(targetX + 10), gg.TYPE_FLOAT)
+    
+    if gg.getResultCount() > 0 then
+        local res = gg.getResults(10)
+        myCarAddress = res[1].address
+        gg.toast("✅ SETUP 2 SUCCESS! Car Locked.")
+    else
+        gg.toast("❌ SETUP 2 FAIL: Tum sahi jagah par nahi ho.")
+    end
+    gg.clearResults()
+    carTeleportMenu()
+end
+
+-- 🔵 METHOD 3: Smart Sync (Player Coords)
+function setupCarMethod3()
+    gg.toast("⏳ Smart Setup chal raha hai... Gaadi me baithe raho!")
+    
+    local pX, pY, pZ = getCurrentCoords() 
+    if not pX then return carTeleportMenu() end
+    
+    gg.clearResults()
+    gg.setRanges(gg.REGION_C_ALLOC | gg.REGION_OTHER)
+    gg.searchNumber(tostring(pX - 1) .. "~" .. tostring(pX + 1), gg.TYPE_FLOAT)
+    
+    if gg.getResultCount() > 0 then
+        local results = gg.getResults(100)
+        for i, v in ipairs(results) do
+            local checkVals = gg.getValues({{address = v.address + 4, flags = gg.TYPE_FLOAT}})
+            local carY = checkVals[1].value
+            if math.abs(carY - pY) < 2.0 then
+                myCarAddress = v.address
+                gg.toast("✅ SETUP 3 SUCCESS! Car Lock Ho Gayi.")
+                gg.clearResults()
+                return carTeleportMenu()
+            end
+        end
+    end
+    gg.toast("❌ SETUP 3 FAIL: Sahi gaadi nahi mili.")
+    gg.clearResults()
+    carTeleportMenu()
+end
+
+-- ⚡ THE EXECUTOR (Teleport to Marker)
+function executeCarTeleport()
+    if not myCarAddress then
+        gg.toast("⚠️ Pehle koi ek SETUP complete karo!")
+        return carTeleportMenu()
+    end
+    
+    local points = {}
+    for _, q in ipairs({"13950255104", "5360320512"}) do
+        if #points == 0 then
+            Z.S(q, Q, O)
+            if Result then
+                for _, v in ipairs(Result) do
+                    local vals = gg.getValues({
+                        {address = v.address + 32, flags = F},
+                        {address = v.address + 36, flags = F},
+                        {address = v.address + 40, flags = F},
+                        {address = v.address + 48, flags = F}
+                    })
+                    local x, y, z, active = vals[1].value, vals[2].value, vals[3].value, vals[4].value
+                    if x ~= 0 and y ~= 0 and active == 1 then
+                        table.insert(points, {x, y, z})
+                    end
+                end
+            end
+        end
+    end
+
+    if #points == 0 then
+        gg.toast("❌ Map par marker nahi mila!")
+        gg.clearResults()
+        return carTeleportMenu()
+    end
+
+    local target = points[1]
+    
+    -- Execute Teleport
+    setvalue(myCarAddress, target[1], F)       -- X
+    setvalue(myCarAddress + 4, target[2], F)   -- Y
+    setvalue(myCarAddress + 8, target[3] + 2, F) -- Z (+2 Safe Drop)
+    
+    gg.toast("✅ BOOM! Gaadi Teleport Ho Gayi!")
+    gg.clearResults()
+    tpMenu()
+end
+
+-- 📱 NAYA MENU CAR TELEPORT KE LIYE
+function carTeleportMenu()
+    menuuuvis = 0
+    local choice = gg.choice({
+        "╔══════════════════════════════════╗",
+        "║   🚗 SETUP 1: Aage-Peeche (Move) ║",
+        "║   📍 SETUP 2: Location (Hardcode)║",
+        "║   🧠 SETUP 3: Smart Sync (Auto)  ║",
+        "╠══════════════════════════════════╣",
+        "║   ⚡ EXECUTE: TELEPORT TO MARKER ║",
+        "╚══════════════════════════════════╝",
+        "🔙 BACK TO TELEPORT MENU"
+    }, nil, "🎯 CAR TELEPORT MENU 🎯\n(Pehle Setup karo, fir Execute dabao)")
+    
+    if not choice then tpMenu() end
+    if choice == 2 then setupCarMethod1()
+    elseif choice == 3 then setupCarMethod2()
+    elseif choice == 4 then setupCarMethod3()
+    elseif choice == 6 then executeCarTeleport()
+    elseif choice == 8 then tpMenu()
+    end
+    menuuuvis = -1
+end
+
 function launchToSpace()
     Z.S("-0.00800000038", F, Cd|Ca|O)
     if #Result > 0 then
@@ -929,6 +1157,66 @@ function launchUpwards()
     gg.clearResults()
     showSuccess()
     carMenu()
+end
+
+-- ==========================================
+-- CAR TELEPORT SYSTEM
+-- ==========================================
+
+function carTeleportByMarker()
+    gg.toast("⚠️ Gaadi me baith jao...")
+    gg.sleep(1000)
+
+    local points = {}
+    -- Same marker search logic jo tumhare player teleport me hai
+    for _, q in ipairs({"13950255104", "5360320512"}) do
+        if #points == 0 then
+            Z.S(q, Q, O)
+            if Result then
+                for _, v in ipairs(Result) do
+                    local vals = gg.getValues({
+                        {address = v.address + 32, flags = F},
+                        {address = v.address + 36, flags = F},
+                        {address = v.address + 40, flags = F},
+                        {address = v.address + 48, flags = F}
+                    })
+                    local x, y, z, active = vals[1].value, vals[2].value, vals[3].value, vals[4].value
+                    -- Marker valid check
+                    if x ~= 0 and y ~= 0 and x > -3000 and x < 3000 and y > -3000 and y < 3000 and active == 1 then
+                        table.insert(points, {x, y, z})
+                    end
+                end
+            end
+        end
+    end
+
+    if #points == 0 then
+        gg.toast("❌ Map par koi marker nahi mila!")
+        gg.clearResults()
+        return tpMenu()
+    end
+
+    local target = points[1] -- First marker uthayega
+    
+    -- Car ka Base Pointer dhund rahe hain (Tumhari script se liya gaya pointer)
+    Z.S("4812096201845506048", Q, Ca|Cd|O)
+    
+    if #Result ~= 0 then
+        local carAddr = Result[1].address
+        
+        -- Car ke X, Y, Z offsets par marker ki location likh rahe hain
+        -- Note: Z-axis me +2.0 add kiya hai taaki gaadi zameen ke andar na dhas jaye
+        setvalue(carAddr + 132, target[1], F)
+        setvalue(carAddr + 136, target[2], F)
+        setvalue(carAddr + 140, 50.0, F) -- Hawa me teleport hoga (Safe drop)
+        
+        gg.toast("✅ Car Teleported to Marker!")
+    else
+        gg.toast("❌ Car nahi mili! Kya tum gaadi me baithe ho?")
+    end
+    
+    gg.clearResults()
+    tpMenu()
 end
 
 function carLogic(state_var, is_on)
@@ -1544,12 +1832,16 @@ function teleportByCoords()
     tpMenu()
 end
 
+-- ==========================================
+-- TELEPORT BY MARKER (ANTI-STUCK FIX)
+-- ==========================================
 function teleportByMarker()
     hookPLAYER(-4, F, 350)
     while true do
         fg.clean()
         local points = {}
         local menu = {}
+        
         for _, q in ipairs({"13950255104", "5360320512"}) do
             if #points == 0 then
                 Z.S(q, Q, O)
@@ -1562,23 +1854,29 @@ function teleportByMarker()
                             {address = v.address + 48, flags = F}
                         })
                         local x, y, z, active = vals[1].value, vals[2].value, vals[3].value, vals[4].value
+                        
                         if x ~= 0 and y ~= 0 and x > -3000 and x < 3000 and y > -3000 and y < 3000 and z == 0 and active == 1 then
-                            table.insert(points, {x, y})
+                            -- YAHAN CHANGE HAI: Humne marker ka memory address bhi save kar liya (addr = v.address)
+                            table.insert(points, {x = x, y = y, addr = v.address}) 
                             table.insert(menu, string.format("📍 [%d] X:%.1f Y:%.1f", #points, x, y))
                         end
                     end
                 end
             end
         end
+        
         if #points == 0 then
             showError()
             fg.clean()
             hookPLAYER(-4, F, 100)
             return tpMenu()
         end
+        
         table.insert(menu, "🔄 REFRESH")
         table.insert(menu, "🔙 BACK")
+        
         local s = gg.choice(menu, nil, "╔══════════════════════════════════════════════════╗\n║           SELECT MARKER TO TELEPORT                 ║\n╚══════════════════════════════════════════════════╝")
+        
         if not s then
             gg.setVisible(false)
             while not gg.isVisible() do gg.sleep(200) end
@@ -1587,8 +1885,14 @@ function teleportByMarker()
             hookPLAYER(-4, F, 100)
             return tpMenu()
         elseif menu[s] == "🔄 REFRESH" then
+            -- Refresh karega bina kuch kiye
         else
-            doTeleport(points[s][1], points[s][2], 50)
+            -- 1. Pehle teleport karo
+            doTeleport(points[s].x, points[s].y, 50)
+            
+            -- 2. THE ULTIMATE FIX: Us marker ko memory se hamesha ke liye Delete (Wipe) kar do!
+            gg.setValues({{address = points[s].addr, value = 0, flags = gg.TYPE_QWORD}})
+            
             showSuccess()
             fg.clean()
             break
@@ -1621,6 +1925,58 @@ function savePoints()
         end
         f:close()
     end
+end
+
+-- ==========================================
+-- SMART AUTO TELEPORTER (BACKGROUND)
+-- ==========================================
+smartAutoTp = "❌"
+
+function toggleSmartAutoTp()
+    if smartAutoTp == "❌" then
+        smartAutoTp = "✅"
+        gg.toast("✅ SMART AUTO TELEPORT ON\n(Menu band karo aur map par marker lagao!)")
+    else
+        smartAutoTp = "❌"
+        gg.toast("❌ SMART AUTO TELEPORT OFF")
+    end
+    tpMenu()
+end
+
+function backgroundMarkerCheck()
+    local points = {}
+    for _, q in ipairs({"13950255104", "5360320512"}) do
+        if #points == 0 then
+            Z.S(q, Q, O)
+            if Result then
+                for _, v in ipairs(Result) do
+                    local vals = gg.getValues({
+                        {address = v.address + 32, flags = F},
+                        {address = v.address + 36, flags = F},
+                        {address = v.address + 40, flags = F},
+                        {address = v.address + 48, flags = F}
+                    })
+                    local x, y, z, active = vals[1].value, vals[2].value, vals[3].value, vals[4].value
+                    
+                    if x ~= 0 and y ~= 0 and x > -3000 and x < 3000 and y > -3000 and y < 3000 and z == 0 and active == 1 then
+                        table.insert(points, {x = x, y = y, addr = v.address})
+                    end
+                end
+            end
+        end
+    end
+
+    if #points > 0 then
+        local target = points[1]
+        
+        -- Teleport karega
+        doTeleport(target.x, target.y, 50)
+        
+        -- Marker ko memory se destroy karega taaki baar-baar wahi na feke
+        gg.setValues({{address = target.addr, value = 0, flags = gg.TYPE_QWORD}})
+        gg.toast("⚡ BHOOM! Auto-Teleported!")
+    end
+    gg.clearResults()
 end
 
 function getCurrentCoords()
@@ -1931,6 +2287,8 @@ function tpMenu()
         "╔══════════════════════════════════╗",
         "║        📍 TELEPORT BY COORDS     ║",
         "║        📌 TELEPORT BY MARKER     ║",
+        "║        🤖 SMART AUTO TELEPORTER  ║" .. (smartAutoTp == "✅" and " ✅ ON" or " ❌ OFF"), -- Naya Option
+        "║        🚗 CAR TELEPORT MENU      ║",
         "║        👣 TELEPORT BY FOOT       ║",
         "║        💾 SAVE/MANAGE POINTS     ║",
         "╚══════════════════════════════════╝",
@@ -1940,9 +2298,11 @@ function tpMenu()
     if not choice then mainMenu() end
     if choice == 2 then teleportByCoords()
     elseif choice == 3 then teleportByMarker()
-    elseif choice == 4 then teleportByFootMenu()
-    elseif choice == 5 then managePointsMenu()
-    elseif choice == 7 then mainMenu()
+    elseif choice == 4 then toggleSmartAutoTp() -- Naya Function Call
+    elseif choice == 5 then carTeleportMenu() 
+    elseif choice == 6 then teleportByFootMenu()
+    elseif choice == 7 then managePointsMenu()
+    elseif choice == 9 then mainMenu()
     end
     menuuuvis = -1
 end
@@ -2160,23 +2520,33 @@ end
 
 
 --╔═══════════════════════════════════════════════════════════════════╗
---║                      SCRIPT START                                             ║
+--║                    SCRIPT START                                     ║
 --╚═══════════════════════════════════════════════════════════════════╝
 
-toast.success("╔═════════════╗\n║             Adil BAJWA 👿 SCRIPT LOADED 🔥                          ╚══════════════╝", 4)
+toast.success("╔═════════════╗\n║             Adil BAJWA 👿 SCRIPT LOADED 🔥                            ╚══════════════╝", 4)
 gg.sleep(1500) 
+
+local autoTpTick = 0 -- Background timer ke liye
 
 while true do
     if gg.isVisible(true) then
         menuuuvis = 1
         gg.setVisible(false)
     end
+    
     if menuuuvis == 1 then
         mainMenu()
     end
+    
+    -- 🤖 SMART AUTO TELEPORT BACKGROUND LOGIC
+    if smartAutoTp == "✅" and menuuuvis == -1 then
+        autoTpTick = autoTpTick + 1
+        -- Har 20 ticks (lagbhag 2 second) me ek baar check karega taaki game lag na ho
+        if autoTpTick >= 20 then 
+            backgroundMarkerCheck()
+            autoTpTick = 0
+        end
+    end
+    
     gg.sleep(100)
 end
-
-
-    
-
