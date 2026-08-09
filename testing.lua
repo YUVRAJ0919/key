@@ -1076,12 +1076,23 @@ function executeCarTeleport()
 
     local target = points[1]
     
-    -- Execute Teleport
-    setvalue(myCarAddress, target[1], F)       -- X
-    setvalue(myCarAddress + 4, target[2], F)   -- Y
-    setvalue(myCarAddress + 8, target[3] + 2, F) -- Z (+2 Safe Drop)
+    -- THE FIX: ENGINE SYNC BY FREEZING MEMORY
+    gg.clearList() -- Pehle se agar kuch freeze hai toh usey hatao
     
-    gg.toast("✅ BOOM! Gaadi Teleport Ho Gayi!")
+    -- setvalue me 4th argument "true" bheja hai, jisse coords lock ho jayenge
+    setvalue(myCarAddress, target[1], F, true)       -- X Freeze
+    setvalue(myCarAddress + 4, target[2], F, true)   -- Y Freeze
+    setvalue(myCarAddress + 8, target[3] + 2, F, true) -- Z Freeze (+2 Height for Safe Drop)
+    
+    gg.toast("⏳ Engine Syncing... Hold on!")
+    
+    -- 500ms (Aadha second) ke liye script ko roko, taaki server naye coords accept kar le
+    gg.sleep(500) 
+    
+    -- Nayi jagah par pohochne ke baad gaadi ko unfreeze karo taaki drive kar sako
+    gg.clearList() 
+    
+    gg.toast("✓ [ SUCCESS ] \n✦ BOOM! Gaadi Teleport Ho Gayi!")
     gg.clearResults()
     tpMenu()
 end
