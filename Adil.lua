@@ -1,50 +1,36 @@
 gg.setVisible(false)
 
-gg.alert("Wellcome ❤️ to Adil Bajwa 👿 English Script This script is totally free 🎉 so avoid scammers ☠️ my discord @adilbajwa03" ) 
+gg.alert("╭──────────────────────────────────────────╮\n│                                          │\n│       ⚡ ADIL BAJWA VIP SCRIPT ⚡        │\n│                                          │\n│     [ 100% FREE | AVOID SCAMMERS ]       │\n│                                          │\n│       Discord: @adilbajwa03              │\n╰──────────────────────────────────────────╯") 
 
---╔═════════════════════════╗
---║                                        ║
---║        █████╗ ██████╗ ██╗██╗         ██████╗  █████╗      ║
---║       ██╔══██╗██╔══██╗██║██║         ██╔══██╗██╔══██╗     ║
---║       ███████║██║  ██║██║██║         ██████╔╝███████║     ║
---║       ██╔══██║██║  ██║██║██║         ██╔══██╗██╔══██║     ║
---║       ██║  ██║██████╔╝██║███████╗  ██████╔╝██║  ██║     ║
---║       ╚═╝  ╚═╝╚═════╝ ╚═╝╚══════╝    ╚═════╝ ╚═╝  ╚═╝     ║
---║                           ║
---║   DEVIL 👿  BAJWA    ║
---║                                                                   ║
---║ CREATED BY ADIL BAJWA    ║
---║   Discord: @adilbajwa03        ║
---║                               ║
---╚═════════════════════╝
+-- ✦ ───────────────────────────────────── ✦
+-- │        𝐀 𝐃 𝐈 𝐋   𝐁 𝐀 𝐉 𝐖 𝐀            │
+-- │          DEVIL 👿 SCRIPT              │
+-- ✦ ───────────────────────────────────── ✦
 
 menuuuvis = 1
 gg.clearResults()
 gg.clearList()
 
---╔════════════════════════╗
---║ GLOBAL ERROR & TOAST FIX ║
---╚════════════════════════╝
-
--- Fix missing showError function called at line 170
-function showError(msg)
-    gg.toast("❌ Error: " .. tostring(msg or "Failed execution"))
+-- ==========================================
+-- 🔔 PREMIUM NOTIFICATIONS
+-- ==========================================
+function showSuccess() 
+    gg.toast("✓ [ SUCCESS ] \n✦ Mod Activated Successfully") 
 end
 
--- Fix toast object compatibility
+function showDisabled()
+    gg.toast("⏾ [ DEACTIVATED ] \n✦ Mod Turned Off")
+end
+
+function showError(msg)
+    gg.toast("⨯ [ ERROR ] \n⚠ " .. tostring(msg or "Value Not Found or Blocked"))
+end
+
 toast = {
     success = function(msg) gg.toast(msg) end,
     hint = function(msg) gg.toast(msg) end,
     error = function(msg) gg.toast(msg) end
 }
-
---╔════════════════════════╗
---║    SPECIAL EFFECTS     ║
---╚════════════════════════╝
-
-function showSuccess() 
-    gg.toast("╔═══════════════╗\n║      ✅ ACTIVATED SUCCESSFULLY ✅     ║\n║  BY Adil    ║\n╚══════════════════╝") 
-end
 
 --╔══════════════════╗
 --║GLOBAL VARIABLES & SETUP                       
@@ -310,11 +296,11 @@ function aimnew()
         gg.setVisible(false)
         local names = {}
         for i, v in ipairs(aim_st) do 
-            table.insert(names, "🔹 " .. v.n .. TOG(v.s)) 
+            table.insert(names, "► " .. v.n .. TOG(v.s)) 
         end
-        table.insert(names, "⬅️ Back")
+        table.insert(names, "⬅️ BACK")
         
-        local r = gg.choice(names, nil, '[ New Aim ]')
+        local r = gg.choice(names, nil, '【 🎯 NEW AIM MODELS 】')
         if r and r <= #aim_st then
             aim_st[r].s = not aim_st[r].s
             local old = "1042536202"
@@ -326,9 +312,9 @@ function aimnew()
                 if gg.getResultCount() > 0 then
                     local res = gg.getResults(10000)
                     gg.editAll(aim_st[r].v, gg.TYPE_DWORD)
-                    gg.toast("✅ ACTIVATED")
+                    showSuccess()
                 else
-                    gg.toast("❌ VALUE NOT FOUND")
+                    showError("Value Not Found")
                 end
             else
                 gg.setRanges(gg.REGION_C_ALLOC | gg.REGION_OTHER)
@@ -336,9 +322,9 @@ function aimnew()
                 if gg.getResultCount() > 0 then
                     local res = gg.getResults(10000)
                     gg.editAll(old, gg.TYPE_DWORD)
-                    gg.toast("💤 DEACTIVATED")
+                    showDisabled()
                 else
-                    gg.toast("❌ VALUE NOT FOUND")
+                    showError("Value Not Found")
                 end
             end
             gg.clearResults()
@@ -362,14 +348,14 @@ function aimold()
     }
     local names = {}
     for i, v in ipairs(aims) do 
-        table.insert(names, "🔹 " .. v[1]) 
+        table.insert(names, "► " .. v[1]) 
     end
-    table.insert(names, "⬅️ Back")
+    table.insert(names, "⬅️ BACK")
     
-    local s = gg.choice(names, nil, '[ Old Aim ]')
+    local s = gg.choice(names, nil, '【 🎯 OLD AIM MODELS 】')
     if s and s <= #aims then
         gg.setVisible(false)
-        gg.toast("Running... To turn off, click the GG icon")
+        gg.toast("⏳ Running... To turn off, click the GG icon")
         for i = 1, 10000 do
             if gg.isVisible() then break end
             gg.clearResults()
@@ -392,7 +378,7 @@ function aimold()
                         gg.editAll(aims[s][3], gg.TYPE_DWORD)
                     end
                     gg.clearResults()
-                    gg.toast("Deactivated, returning to menu")
+                    gg.toast("⏾ Deactivated, returning to menu")
                     return aimold()
                 end
                 gg.sleep(200)
@@ -410,10 +396,10 @@ function AdilAimMenu()
     while inAimMenu do
         gg.setVisible(false)
         local aChoice = gg.choice({
-            "🔹 Old Aim Models",
-            "🔹 New Aim Models",
-            "⬅️ Back to Main Menu"
-        }, nil, "🎯 Aim Menu 🎯")
+            "► Old Aim Models",
+            "► New Aim Models",
+            "⬅️ RETURN TO MAIN MENU"
+        }, nil, "【 🎯 AIMBOT MENU 】")
         
         if aChoice == 1 then 
             aimold()
@@ -430,26 +416,6 @@ end
 --╔═════════════════════════════════════╗
 --║                    PLAYER MODS                                                          ║
 --╚═════════════════════════════════════╝
--- ==========================================
--- 🔔 PREMIUM NOTIFICATIONS
--- ==========================================
-function showSuccess() 
-    gg.toast("✓ [ SUCCESS ] \n✦ Mod Activated Successfully") 
-end
-
-function showDisabled()
-    gg.toast("⏾ [ DEACTIVATED ] \n✦ Mod Turned Off")
-end
-
-function showError()
-    gg.toast("⨯ [ ERROR ] \n⚠ Value Not Found or Blocked")
-end
-
-toast = {
-    success = function(msg) gg.toast(msg) end,
-    hint = function(msg) gg.toast(msg) end,
-    error = function(msg) gg.toast(msg) end
-}
 
 -- ==========================================
 -- Player Mod Functions
@@ -657,7 +623,6 @@ function toggleTankMode()
     
     gg.clearResults()
     carMenu()
-end
 end
 
 function autoKillAll()
@@ -1404,31 +1369,30 @@ end
 function visualMenu()
     menuuuvis = 0
     local choice = gg.choice({
-        "╔══════════════════════════════════╗",
-        "║        👁️ ESP ON NAMES          ║" .. (esplol == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🤍 WHITE CHAMS            ║" .. (chamsiwhite == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        ❤️ RED CHAMS              ║" .. (chamsired == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        👓 WIDE FOV               ║" .. (fovv == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔭 ULTRA WIDE FOV         ║" .. (ulfovq == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔤 CHANGE LOGIN           ║",
-        "║        ✏️ CHANGE NICKNAME        ║",
-        "║        👻 INVISIBLE WALLS        ║" .. (invwal == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "╚══════════════════════════════════╝",
-        "🔙 RETURN TO MAIN MENU"
-    }, nil, "╔══════════════════════════════════════════════════╗\n║               VISUAL MODS - Adil                   ║\n╚══════════════════════════════════════════════════╝")
+        "► 👁️ ESP ON NAMES"         .. (esplol == "✅" and " [ON]" or ""),
+        "► 🤍 WHITE CHAMS"          .. (chamsiwhite == "✅" and " [ON]" or ""),
+        "► ❤️ RED CHAMS"            .. (chamsired == "✅" and " [ON]" or ""),
+        "► 👓 WIDE FOV"             .. (fovv == "✅" and " [ON]" or ""),
+        "► 🔭 ULTRA WIDE FOV"       .. (ulfovq == "✅" and " [ON]" or ""),
+        "► 🔤 CHANGE LOGIN",
+        "► ✏️ CHANGE NICKNAME",
+        "► 👻 INVISIBLE WALLS"      .. (invwal == "✅" and " [ON]" or ""),
+        "⬅️ RETURN TO MAIN MENU"
+    }, nil, "【 👁️ VISUAL MODS 】")
     
-    if not choice then mainMenu() end
+    if not choice or choice == 9 then 
+        mainMenu() 
+        return 
+    end
     
-    local actions = {2,3,4,5,6,7,8,9,10}
-    if choice == actions[1] then toggleESP()
-    elseif choice == actions[2] then toggleWhiteChams()
-    elseif choice == actions[3] then toggleRedChams()
-    elseif choice == actions[4] then toggleFOV()
-    elseif choice == actions[5] then toggleUltraFOV()
-    elseif choice == actions[6] then changeLogin()
-    elseif choice == actions[7] then changeNickname()
-    elseif choice == actions[8] then toggleInvisibleWalls()
-    elseif choice == actions[10] then mainMenu()
+    if choice == 1 then toggleESP()
+    elseif choice == 2 then toggleWhiteChams()
+    elseif choice == 3 then toggleRedChams()
+    elseif choice == 4 then toggleFOV()
+    elseif choice == 5 then toggleUltraFOV()
+    elseif choice == 6 then changeLogin()
+    elseif choice == 7 then changeNickname()
+    elseif choice == 8 then toggleInvisibleWalls()
     end
     menuuuvis = -1
 end
@@ -1974,80 +1938,79 @@ end
 function managePointsMenu()
     loadPoints()
     local choice = gg.choice({
-        "╔══════════════════════════════════╗",
-        "║        📍 GET CURRENT COORDS     ║",
-        "║        💾 SAVE CURRENT POINT     ║",
-        "║        📋 MY SAVED POINTS        ║",
-        "║        🗑️ CLEAR ALL POINTS       ║",
-        "╚══════════════════════════════════╝",
-        "🔙 BACK"
-    }, nil, "╔══════════════════════════════════════════════════╗\n║              MANAGE POINTS - Adil                  ║\n╚══════════════════════════════════════════════════╝")
+        "► 📍 GET CURRENT COORDS",
+        "► 💾 SAVE CURRENT POINT",
+        "► 📋 MY SAVED POINTS",
+        "► 🗑️ CLEAR ALL POINTS",
+        "⬅️ BACK"
+    }, nil, "【 💾 MANAGE POINTS 】")
     
     if not choice then return tpMenu() end
-        if choice == 2 then
+    
+    if choice == 1 then
         local x, y, z = getCurrentCoords()
         if x then
             local text = string.format("X: %.2f\nY: %.2f\nZ: %.2f", x, y, z)
             local res = gg.alert(text, "BACK", "COPY")
             if res == 2 then
                 gg.copyText(text)
-                toast.success("╔══════════════════════════════════╗\n║      📋 COORDINATES COPIED 📋      ║\n╚══════════════════════════════════╝")
+                gg.toast("✓ [ COPIED ] \n✦ Coordinates copied to clipboard")
             end
         end
         managePointsMenu()
         
-    elseif choice == 3 then
+    elseif choice == 2 then
         local x, y, z = getCurrentCoords()
         if x then
             local prompt = gg.prompt({"📝 POINT NAME:"}, {"Point " .. os.date("%H:%M")}, {"text"})
             if prompt then
                 table.insert(savedPoints, {name = prompt[1], x = x, y = y, z = z})
                 savePoints()
-                toast.success("╔══════════════════════════════════╗\n║      💾 POINT SAVED: " .. prompt[1] .. "      ║\n╚══════════════════════════════════╝")
+                gg.toast("✓ [ SAVED ] \n✦ " .. prompt[1])
             end
         end
         managePointsMenu()
         
-    elseif choice == 4 then
+    elseif choice == 3 then
         viewSavedPoints()
         
-    elseif choice == 5 then
-        if gg.alert("🗑️ DELETE ALL POINTS?", "YES", "NO") == 1 then
+    elseif choice == 4 then
+        if gg.alert("⚠ DELETE ALL POINTS?", "YES", "NO") == 1 then
             savedPoints = {}
             savePoints()
-            toast.success("╔══════════════════════════════════╗\n║      🗑️ ALL POINTS CLEARED 🗑️     ║\n╚══════════════════════════════════╝")
+            gg.toast("🗑️ [ CLEARED ] \n✦ All Points Deleted")
         end
         managePointsMenu()
         
-    elseif choice == 7 then
+    elseif choice == 5 then
         tpMenu()
     end
 end
 
 function viewSavedPoints()
     if #savedPoints == 0 then
-        gg.alert("╔══════════════════════════════════╗\n║      📋 NO SAVED POINTS FOUND      ║\n╚══════════════════════════════════╝")
+        gg.alert("📋 NO SAVED POINTS FOUND")
         return managePointsMenu()
     end
     
     local list = {}
     for i, p in ipairs(savedPoints) do
-        list[i] = string.format("📍 %s", p.name)
+        list[i] = string.format("► 📍 %s", p.name)
     end
-    list[#list + 1] = "🔙 BACK"
+    list[#list + 1] = "⬅️ BACK"
     
-    local q = gg.choice(list, nil, "╔══════════════════════════════════════════════════╗\n║                 SELECT POINT - Adil               ║\n╚══════════════════════════════════════════════════╝")
+    local q = gg.choice(list, nil, "【 📋 MY SAVED POINTS 】")
     if not q or q == #list then return managePointsMenu() end
     
     local p = savedPoints[q]
-    local action = gg.choice({"『 ✈️ 』 TELEPORT", "『 🗑️ 』 DELETE", "🔙 BACK"}, nil, p.name)
+    local action = gg.choice({"► ✈️ TELEPORT", "► 🗑️ DELETE", "⬅️ BACK"}, nil, "【 " .. p.name .. " 】")
     
     if action == 1 then
         doTeleport(p.x, p.y, p.z)
     elseif action == 2 then
         table.remove(savedPoints, q)
         savePoints()
-        toast.success("╔══════════════════════════════════╗\n║      🗑️ POINT DELETED 🗑️           ║\n╚══════════════════════════════════╝")
+        gg.toast("🗑️ [ DELETED ] \n✦ Point Removed")
         viewSavedPoints()
     else
         viewSavedPoints()
@@ -2200,20 +2163,19 @@ function showLocations(locations, title)
     teleportByFootMenu()
 end
 
-function showPublicPlaces() showLocations(publicPlaces, "╔══════════════════════════════════════════════════╗\n║                PUBLIC PLACES - Adil               ║\n╚══════════════════════════════════════════════════╝") end
-function showStations() showLocations(stations, "╔══════════════════════════════════════════════════╗\n║                  STATIONS - Adil                  ║\n╚══════════════════════════════════════════════════╝") end
-function showParking() showLocations(parking, "╔══════════════════════════════════════════════════╗\n║               PARKING LOTS - Adil                 ║\n╚══════════════════════════════════════════════════╝") end
-function showGovernment() showLocations(government, "╔══════════════════════════════════════════════════╗\n║               GOVERNMENT - Adil                   ║\n╚══════════════════════════════════════════════════╝") end
-function showCriminal() showLocations(criminal, "╔══════════════════════════════════════════════════╗\n║                CRIMINAL - Adil                    ║\n╚══════════════════════════════════════════════════╝") end
-function showStarterJobs() showLocations(starterJobs, "╔══════════════════════════════════════════════════╗\n║              STARTER JOBS - Adil                  ║\n╚══════════════════════════════════════════════════╝") end
-function showJobs() showLocations(jobs, "╔══════════════════════════════════════════════════╗\n║                  JOBS - Adil                      ║\n╚══════════════════════════════════════════════════╝") end
-function showEntertainment() showLocations(entertainment, "╔══════════════════════════════════════════════════╗\n║              ENTERTAINMENT - Adil                 ║\n╚══════════════════════════════════════════════════╝") end
-function showAirdropAdil()
- showLocations(airdropAdil, "╔══════════════════════════════════════════════════╗\n║              AirdropAdil - Adil                 ║\n╚══════════════════════════════════════════════════╝") end
-function showHeliClubs() showLocations(heliClubs, "╔══════════════════════════════════════════════════╗\n║               HELI CLUBS - Adil                   ║\n╚══════════════════════════════════════════════════╝") end
-function showBuyers() showLocations(buyers, "╔══════════════════════════════════════════════════╗\n║                 BUYERS - Adil                     ║\n╚══════════════════════════════════════════════════╝") end
-function showBusinesses() showLocations(businesses, "╔══════════════════════════════════════════════════╗\n║               BUSINESSES - Adil                   ║\n╚══════════════════════════════════════════════════╝") end
-function showQuarries() showLocations(quarries, "╔══════════════════════════════════════════════════╗\n║                QUARRIES - Adil                    ║\n╚══════════════════════════════════════════════════╝") end
+function showPublicPlaces() showLocations(publicPlaces, "【 🏢 PUBLIC PLACES 】") end
+function showStations() showLocations(stations, "【 🚉 STATIONS 】") end
+function showParking() showLocations(parking, "【 🅿️ PARKING LOTS 】") end
+function showGovernment() showLocations(government, "【 👮 GOVERNMENT 】") end
+function showCriminal() showLocations(criminal, "【 🕵️ CRIMINAL 】") end
+function showStarterJobs() showLocations(starterJobs, "【 🔰 STARTER JOBS 】") end
+function showJobs() showLocations(jobs, "【 💼 JOBS 】") end
+function showEntertainment() showLocations(entertainment, "【 🎉 ENTERTAINMENT 】") end
+function showAirdropAdil() showLocations(airdropAdil, "【 🎁 AIRDROP LOCATIONS 】") end
+function showHeliClubs() showLocations(heliClubs, "【 🚁 HELI CLUBS 】") end
+function showBuyers() showLocations(buyers, "【 💰 BUYERS 】") end
+function showBusinesses() showLocations(businesses, "【 💵 BUSINESSES 】") end
+function showQuarries() showLocations(quarries, "【 ⛏️ QUARRIES 】") end
 
 function tpMenu()
     menuuuvis = 0
@@ -2294,40 +2256,39 @@ end
 --║                    DEV & SUPPORT                                   ║
 --╚═══════════════════════════════════════════════════════════════════╝
 
+-- ==========================================
+-- DEV & SUPPORT 
+-- ==========================================
+
 function devMenu()
     local choice = gg.choice({
-        "╔══════════════════════════════════╗",
-        "║        📺 YOUTUBE: @Adilbajwa1170      ║",
-        "║        💬 Discord: @adilbajwa03    ║",
-        "╚══════════════════════════════════╝",
-        "🔙 BACK"
-    }, nil, "╔══════════════════════════════════════════════════╗\n║               DEVELOPER - Adil                    ║\n╚══════════════════════════════════════════════════╝")
+        "► 📺 YOUTUBE: @Adilbajwa1170",
+        "► 💬 Discord: @adilbajwa03",
+        "⬅️ BACK"
+    }, nil, "【 👑 DEVELOPER INFO 】")
     
-    if not choice then mainMenu() end
-    if choice == 2 then
+    if not choice or choice == 3 then return mainMenu() end
+    if choice == 1 then
         gg.copyText("https://youtube.com/@Adilbajwa1170")
         gg.goURL("https://youtube.com/@Adilbajwa1170")
-    elseif choice == 3 then
+    elseif choice == 2 then
         gg.copyText("https://dc.me/Adilbajwa03")
         gg.goURL("https://dc.me/Adilbajwa03")
-    elseif choice == 5 then
-        mainMenu()
     end
     devMenu()
 end
 
 function supportMenu()
     local choice = gg.choice({
-        "╔══════════════════════════════════╗",
-        "║        💳 SUPPORT THE CREATOR    ║",
-        "║        💎 Discord:    adilbajwa03               ║", 
-        "║        ❤️ Youtube: https://youtube.com/@adilbajwa1170?si=Psuvdks0A7iELnOQhttps://youtube.com/@adilbajwa1170?si=Psuvdks0A7iELnOQ║",
-        "╚══════════════════════════════════╝",
-        "🔙 BACK"
-    }, nil, "╔════════════╗\n║                             SUPPORT - Adil Bajwa                   ║\n╚════════════╝")
+        "► 💳 SUPPORT THE CREATOR",
+        "► 💎 Discord: adilbajwa03", 
+        "► ❤️ Youtube: @adilbajwa1170",
+        "⬅️ BACK"
+    }, nil, "【 💝 SUPPORT CREATOR 】")
     
-    if not choice then mainMenu()
-    elseif choice == 5 then mainMenu()
+    if not choice or choice == 4 then return mainMenu() end
+    if choice == 3 then
+        gg.goURL("https://youtube.com/@adilbajwa1170")
     end
     supportMenu()
 end
@@ -2335,13 +2296,9 @@ end
 function exitScript()
     if AdilAimbotRunning then
         AdilAimbotRunning = false
-        AdilSmoothAimbotOff()
+        if AdilSmoothAimbotOff then AdilSmoothAimbotOff() end
     end
-    print("╔═════════════════╗")
-    print("║ GRAND MOBILE SCRIPT  ║")
-    print("║    Adil Bajwa EXITING..  ║")
-    print("║                            ║")
-    print("╚It's Devil 👿  script going OFF╝")
+    gg.toast("⏾ [ EXITING ] \n✦ Adil VIP Script Shutting Down...")
     gg.setVisible(true)
     os.exit()
     gg.exit()
@@ -2501,8 +2458,6 @@ end
 --║                    SCRIPT START                                     ║
 --╚═══════════════════════════════════════════════════════════════════╝
 
-toast.success("╔═════════════╗\n║             Adil BAJWA 👿 SCRIPT LOADED 🔥                            ╚══════════════╝", 4)
-gg.sleep(1500) 
 
 local autoTpTick = 0 -- Background timer ke liye
 
