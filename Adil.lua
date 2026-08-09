@@ -430,17 +430,26 @@ end
 --╔═════════════════════════════════════╗
 --║                    PLAYER MODS                                                          ║
 --╚═════════════════════════════════════╝
-function showSuccess()
-    gg.toast("✅ ACTIVATED")
+-- ==========================================
+-- 🔔 PREMIUM NOTIFICATIONS
+-- ==========================================
+function showSuccess() 
+    gg.toast("✓ [ SUCCESS ] \n✦ Mod Activated Successfully") 
 end
 
 function showDisabled()
-    gg.toast("💤 DEACTIVATED")
+    gg.toast("⏾ [ DEACTIVATED ] \n✦ Mod Turned Off")
 end
 
 function showError()
-    gg.toast("❌ VALUE NOT FOUND / ERROR")
+    gg.toast("⨯ [ ERROR ] \n⚠ Value Not Found or Blocked")
 end
+
+toast = {
+    success = function(msg) gg.toast(msg) end,
+    hint = function(msg) gg.toast(msg) end,
+    error = function(msg) gg.toast(msg) end
+}
 
 -- ==========================================
 -- Player Mod Functions
@@ -820,26 +829,26 @@ end
 function playerMenu()
     menuuuvis = 0
     local choice = gg.choice({
-        "🏃 SPEED HACK"             .. (shv222 == "✅" and "  [ON]" or ""),
-        "🏃 SPEED HACK V2"          .. (mbq == "✅" and "  [ON]" or ""),
-        "🎛️ CUSTOM SPEED (1X-10X)",  
-        "🦍 PLAYER SIZE MODIFIER",   -- Naya: Size Modifier
-        "🔪 AUTO-KILL ALL",          -- Naya: Auto Kill All
-        "💚 GOD MODE"               .. (gm4 == "✅" and "  [ON]" or ""),
-        "💚 GOD MODE V2"            .. (gm9 == "✅" and "  [ON]" or ""),
-        "🛡️ ARMOR PACIFIER"         .. (gm5 == "✅" and "  [ON]" or ""),
-        "❤️ RESTORE HEALTH",
-        "💀 SUICIDE",
-        "🧱 WALK THROUGH WALLS"     .. (walg == "✅" and "  [ON]" or ""),
-        "⬆️ FLIP UP",
-        "⬇️ FLIP DOWN",
-        "👊 FAST KILL (Fists)"      .. (fastkil == "✅" and "  [ON]" or ""),
-        "🦘 HIGH JUMP"              .. (hjj == "✅" and "  [ON]" or ""),
-        "🔄 SHARP TURNS"            .. (whh == "✅" and "  [ON]" or ""),
-        "🌎 GRAVITY V1"             .. (graviq == "✅" and "  [ON]" or ""),
-        "🌎 GRAVITY V2"             .. (graviqq == "✅" and "  [ON]" or ""),
-        "🔙 RETURN TO MAIN MENU"
-    }, nil, "🎯 PLAYER MODS 🎯")
+        "► 🏃 SPEED HACK"            .. (shv222 == "✅" and " [ON]" or ""),
+        "► 🏃 SPEED HACK V2"         .. (mbq == "✅" and " [ON]" or ""),
+        "► 🎛️ CUSTOM SPEED (1X-10X)",  
+        "► 🦍 PLAYER SIZE MODIFIER", 
+        "► 🔪 AUTO-KILL ALL",        
+        "► 💚 GOD MODE"             .. (gm4 == "✅" and " [ON]" or ""),
+        "► 💚 GOD MODE V2"          .. (gm9 == "✅" and " [ON]" or ""),
+        "► 🛡️ ARMOR PACIFIER"        .. (gm5 == "✅" and " [ON]" or ""),
+        "► ❤️ RESTORE HEALTH",
+        "► 💀 SUICIDE",
+        "► 🧱 WALK THROUGH WALLS"    .. (walg == "✅" and " [ON]" or ""),
+        "► ⬆️ FLIP UP",
+        "► ⬇️ FLIP DOWN",
+        "► 👊 FAST KILL (Fists)"     .. (fastkil == "✅" and " [ON]" or ""),
+        "► 🦘 HIGH JUMP"             .. (hjj == "✅" and " [ON]" or ""),
+        "► 🔄 SHARP TURNS"           .. (whh == "✅" and " [ON]" or ""),
+        "► 🌎 GRAVITY V1"            .. (graviq == "✅" and " [ON]" or ""),
+        "► 🌎 GRAVITY V2"            .. (graviqq == "✅" and " [ON]" or ""),
+        "⬅️ RETURN TO MAIN MENU"
+    }, nil, "【 👤 PLAYER MODS 】")
     
     if not choice or choice == 19 then 
         mainMenu()
@@ -849,8 +858,8 @@ function playerMenu()
     if choice == 1 then toggleSpeed()
     elseif choice == 2 then toggleSpeedV2()
     elseif choice == 3 then customPlayerSpeed() 
-    elseif choice == 4 then setPlayerSize()     -- Attach: Size
-    elseif choice == 5 then autoKillAll()       -- Attach: Auto Kill
+    elseif choice == 4 then setPlayerSize() 
+    elseif choice == 5 then autoKillAll() 
     elseif choice == 6 then toggleGodMode()
     elseif choice == 7 then toggleGodModeV2()
     elseif choice == 8 then toggleArmor()
@@ -1249,43 +1258,42 @@ end
 function carMenu()
     menuuuvis = 0
     local choice = gg.choice({
-        "╔══════════════════════════════════╗",
-        "║        💚 CAR GOD MODE           ║" .. (gmcarchik == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔧 RESTORE CAR HEALTH     ║",
-        "║        💥 BREAK CAR              ║",
-        "║        💨 NITRO                  ║" .. (nitr == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔧 HYDRAULICS             ║" .. (gidraa == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        ⚡ SPEED HACK             ║" .. (shcar == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🎚️ SET CAR SPEED LIMIT    ║",
-        "║        🚜 TANK / BULLDOZER MODE  ║" .. (tankmod == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"), -- Naya option
-        "║        🛵 MOPED SPEED            ║" .. (mopsh == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🚀 LAUNCH TO SPACE        ║",
-        "║        ⬆️ LAUNCH UPWARDS         ║",
-        "║        ⚙️ ENGINE BOOST           ║" .. (upmotor == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔄 ANTI FLIP              ║" .. (perevorot1 == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🫸 PUT ON WHEELS          ║" .. (carkoles1 == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "╚══════════════════════════════════╝",
-        "🔙 RETURN TO MAIN MENU"
-    }, nil, "╔══════════════════════════════════════════════════╗\n║                CAR MODS - Adil                   ║\n╚══════════════════════════════════════════════════╝")
+        "► 💚 CAR GOD MODE"            .. (gmcarchik == "✅" and " [ON]" or ""),
+        "► 🔧 RESTORE CAR HEALTH",
+        "► 💥 BREAK CAR",
+        "► 💨 NITRO"                   .. (nitr == "✅" and " [ON]" or ""),
+        "► 🔧 HYDRAULICS"              .. (gidraa == "✅" and " [ON]" or ""),
+        "► ⚡ SPEED HACK"              .. (shcar == "✅" and " [ON]" or ""),
+        "► 🎚️ SET CAR SPEED LIMIT",
+        "► 🚜 TANK / BULLDOZER MODE"   .. (tankmod == "✅" and " [ON]" or ""),
+        "► 🛵 MOPED SPEED"             .. (mopsh == "✅" and " [ON]" or ""),
+        "► 🚀 LAUNCH TO SPACE",
+        "► ⬆️ LAUNCH UPWARDS",
+        "► ⚙️ ENGINE BOOST"            .. (upmotor == "✅" and " [ON]" or ""),
+        "► 🔄 ANTI FLIP"               .. (perevorot1 == "✅" and " [ON]" or ""),
+        "► 🫸 PUT ON WHEELS"           .. (carkoles1 == "✅" and " [ON]" or ""),
+        "⬅️ RETURN TO MAIN MENU"
+    }, nil, "【 🚗 CAR MODS 】")
     
-    if not choice then mainMenu() end
+    if not choice or choice == 15 then 
+        mainMenu() 
+        return 
+    end
     
-    local actions = {2,3,4,5,6,7,8,9,10,11,12,13,14,15,17}
-    if choice == actions[1] then toggleCarGodMode()
-    elseif choice == actions[2] then restoreCarHealth()
-    elseif choice == actions[3] then breakCar()
-    elseif choice == actions[4] then toggleNitro()
-    elseif choice == actions[5] then toggleHydraulics()
-    elseif choice == actions[6] then toggleCarSpeed()
-    elseif choice == actions[7] then customCarSpeed() 
-    elseif choice == actions[8] then toggleTankMode()     -- Attach: Tank mode
-    elseif choice == actions[9] then toggleMopedSpeed()
-    elseif choice == actions[10] then launchToSpace()
-    elseif choice == actions[11] then launchUpwards()
-    elseif choice == actions[12] then toggleEngineBoost()
-    elseif choice == actions[13] then toggleAntiFlip()
-    elseif choice == actions[14] then toggleOnWheels()
-    elseif choice == actions[15] then mainMenu()
+    if choice == 1 then toggleCarGodMode()
+    elseif choice == 2 then restoreCarHealth()
+    elseif choice == 3 then breakCar()
+    elseif choice == 4 then toggleNitro()
+    elseif choice == 5 then toggleHydraulics()
+    elseif choice == 6 then toggleCarSpeed()
+    elseif choice == 7 then customCarSpeed() 
+    elseif choice == 8 then toggleTankMode() 
+    elseif choice == 9 then toggleMopedSpeed()
+    elseif choice == 10 then launchToSpace()
+    elseif choice == 11 then launchUpwards()
+    elseif choice == 12 then toggleEngineBoost()
+    elseif choice == 13 then toggleAntiFlip()
+    elseif choice == 14 then toggleOnWheels()
     end
     menuuuvis = -1
 end
@@ -1642,21 +1650,18 @@ end
 function antiReloadMenu()
     menuuuvis = 0
     local choice = gg.choice({
-        "╔══════════════════════════════════╗",
-        "║        🔫 DEAGLE                 ║" .. (relodgper == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔫 M4                     ║" .. (relom4per == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔫 AK-47                  ║" .. (reloakper == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔫 MP5                    ║" .. (relompper == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "╚══════════════════════════════════╝",
-        "🔙 RETURN TO WEAPON MENU"
-    }, nil, "╔══════════════════════════════════════════════════╗\n║                ANTI RELOAD - Adil                  ║\n╚══════════════════════════════════════════════════╝")
+        "► 🔫 DEAGLE"  .. (relodgper == "✅" and " [ON]" or ""),
+        "► 🔫 M4"      .. (relom4per == "✅" and " [ON]" or ""),
+        "► 🔫 AK-47"   .. (reloakper == "✅" and " [ON]" or ""),
+        "► 🔫 MP5"     .. (relompper == "✅" and " [ON]" or ""),
+        "⬅️ BACK"
+    }, nil, "【 🔄 ANTI RELOAD 】")
     
-    if not choice then gunMenu() end
-    if choice == 2 then toggleAntiReload("relodgper", "+200", 22)
-    elseif choice == 3 then toggleAntiReload("relom4per", "+296", 50)
-    elseif choice == 4 then toggleAntiReload("reloakper", "+296", 50)
-    elseif choice == 5 then toggleAntiReload("relompper", "+264", 50)
-    elseif choice == 7 then gunMenu()
+    if not choice or choice == 5 then return gunMenu() end
+    if choice == 1 then toggleAntiReload("relodgper", "+200", 22)
+    elseif choice == 2 then toggleAntiReload("relom4per", "+296", 50)
+    elseif choice == 3 then toggleAntiReload("reloakper", "+296", 50)
+    elseif choice == 4 then toggleAntiReload("relompper", "+264", 50)
     end
     menuuuvis = -1
 end
@@ -1664,23 +1669,20 @@ end
 function infiniteAmmoMenu()
     menuuuvis = 0
     local choice = gg.choice({
-        "╔══════════════════════════════════╗",
-        "║        🔫 DEAGLE                 ║" .. (bdg == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔫 M4                     ║" .. (bmka == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔫 AK-47                  ║" .. (bkal == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔫 SHOTGUN                ║" .. (bdrobq == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔫 MP5                    ║" .. (bmp5q == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "╚══════════════════════════════════╝",
-        "🔙 RETURN TO WEAPON MENU"
-    }, nil, "╔══════════════════════════════════════════════════╗\n║              INFINITE AMMO - Adil                  ║\n╚══════════════════════════════════════════════════╝")
+        "► 🔫 DEAGLE"   .. (bdg == "✅" and " [ON]" or ""),
+        "► 🔫 M4"       .. (bmka == "✅" and " [ON]" or ""),
+        "► 🔫 AK-47"    .. (bkal == "✅" and " [ON]" or ""),
+        "► 🔫 SHOTGUN"  .. (bdrobq == "✅" and " [ON]" or ""),
+        "► 🔫 MP5"      .. (bmp5q == "✅" and " [ON]" or ""),
+        "⬅️ BACK"
+    }, nil, "【 ♾️ INFINITE AMMO 】")
     
-    if not choice then gunMenu() end
-    if choice == 2 then toggleInfiniteAmmo("bdg", "+204")
-    elseif choice == 3 then toggleInfiniteAmmo("bmka", "+300")
-    elseif choice == 4 then toggleInfiniteAmmo("bkal", "+300")
-    elseif choice == 5 then toggleInfiniteAmmo("bdrobq", "+236")
-    elseif choice == 6 then toggleInfiniteAmmo("bmp5q", "+268")
-    elseif choice == 8 then gunMenu()
+    if not choice or choice == 6 then return gunMenu() end
+    if choice == 1 then toggleInfiniteAmmo("bdg", "+204")
+    elseif choice == 2 then toggleInfiniteAmmo("bmka", "+300")
+    elseif choice == 3 then toggleInfiniteAmmo("bkal", "+300")
+    elseif choice == 4 then toggleInfiniteAmmo("bdrobq", "+236")
+    elseif choice == 5 then toggleInfiniteAmmo("bmp5q", "+268")
     end
     menuuuvis = -1
 end
@@ -1688,27 +1690,24 @@ end
 function freezeSlotsMenu()
     menuuuvis = 0
     local choice = gg.choice({
-        "╔══════════════════════════════════╗",
-        "║        🔫 DEAGLE                 ║" .. (frzsl1 == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔫 GLOCK                  ║" .. (frzsl2 == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔫 M4                     ║" .. (frzsl3 == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔫 AK-47                  ║" .. (frzsl4 == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔫 MP5                    ║" .. (frzsl5 == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔫 SNIPER                 ║" .. (frzsl6 == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🔫 SHOTGUN                ║" .. (frzsl7 == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "╚══════════════════════════════════╝",
-        "🔙 RETURN TO WEAPON MENU"
-    }, nil, "╔══════════════════════════════════════════════════╗\n║               FREEZE SLOTS - Adil                  ║\n╚══════════════════════════════════════════════════╝")
+        "► 🔫 DEAGLE"   .. (frzsl1 == "✅" and " [ON]" or ""),
+        "► 🔫 GLOCK"    .. (frzsl2 == "✅" and " [ON]" or ""),
+        "► 🔫 M4"       .. (frzsl3 == "✅" and " [ON]" or ""),
+        "► 🔫 AK-47"    .. (frzsl4 == "✅" and " [ON]" or ""),
+        "► 🔫 MP5"      .. (frzsl5 == "✅" and " [ON]" or ""),
+        "► 🔫 SNIPER"   .. (frzsl6 == "✅" and " [ON]" or ""),
+        "► 🔫 SHOTGUN"  .. (frzsl7 == "✅" and " [ON]" or ""),
+        "⬅️ BACK"
+    }, nil, "【 ❄️ FREEZE SLOTS 】")
     
-    if not choice then gunMenu() end
-    if choice == 2 then toggleFreezeSlot("frzsl1", "+192", 24, "+204")
-    elseif choice == 3 then toggleFreezeSlot("frzsl2", "+192", 22, "+204")
-    elseif choice == 4 then toggleFreezeSlot("frzsl3", "+288", 31, "+300")
-    elseif choice == 5 then toggleFreezeSlot("frzsl4", "+288", 30, "+300")
-    elseif choice == 6 then toggleFreezeSlot("frzsl5", "+256", 29, "+268")
-    elseif choice == 7 then toggleFreezeSlot("frzsl6", "+320", 34, "+332")
-    elseif choice == 8 then toggleFreezeSlot("frzsl7", "+224", 25, "+236")
-    elseif choice == 10 then gunMenu()
+    if not choice or choice == 8 then return gunMenu() end
+    if choice == 1 then toggleFreezeSlot("frzsl1", "+192", 24, "+204")
+    elseif choice == 2 then toggleFreezeSlot("frzsl2", "+192", 22, "+204")
+    elseif choice == 3 then toggleFreezeSlot("frzsl3", "+288", 31, "+300")
+    elseif choice == 4 then toggleFreezeSlot("frzsl4", "+288", 30, "+300")
+    elseif choice == 5 then toggleFreezeSlot("frzsl5", "+256", 29, "+268")
+    elseif choice == 6 then toggleFreezeSlot("frzsl6", "+320", 34, "+332")
+    elseif choice == 7 then toggleFreezeSlot("frzsl7", "+224", 25, "+236")
     end
     menuuuvis = -1
 end
@@ -1716,39 +1715,26 @@ end
 function giveWeaponMenu()
     menuuuvis = 0
     local choice = gg.choice({
-        "╔══════════════════════════════════╗",
-        "║        🔫 DEAGLE                 ║",
-        "║        🔫 M4                     ║",
-        "║        🔫 AK-47                  ║",
-        "║        🔫 SHOTGUN                ║",
-        "║        🔫 MP5                    ║",
-        "║        🔫 GLOCK                  ║",
-        "║        🔫 SNIPER (No Scope)      ║",
-        "║        🔫 SNIPER (Scope)         ║",
-        "║        🔫 MINIGUN                ║",
-        "║        🔫 RPG                    ║",
-        "║        🔫 RPG AUTO               ║",
-        "║        🔫 OTHER WEAPONS          ║",
-        "║        ℹ️ WEAPON IDs             ║",
-        "╚══════════════════════════════════╝",
-        "🔙 RETURN TO WEAPON MENU"
-    }, nil, "╔══════════════════════════════════════════════════╗\n║               GIVE WEAPON - Adil                    ║\n╚══════════════════════════════════════════════════╝")
+        "► 🔫 DEAGLE", "► 🔫 M4", "► 🔫 AK-47", "► 🔫 SHOTGUN", "► 🔫 MP5", 
+        "► 🔫 GLOCK", "► 🔫 SNIPER (No Scope)", "► 🔫 SNIPER (Scope)", 
+        "► 🔫 MINIGUN", "► 🔫 RPG", "► 🔫 RPG AUTO", "► 🔫 OTHER WEAPONS", 
+        "► ℹ️ WEAPON IDs", "⬅️ BACK"
+    }, nil, "【 🔫 GIVE WEAPON 】")
     
-    if not choice then gunMenu() end
-    if choice == 2 then giveWeapon("+192", 24, "+204")
-    elseif choice == 3 then giveWeapon("+288", 31, "+300")
-    elseif choice == 4 then giveWeapon("+288", 30, "+300")
-    elseif choice == 5 then giveWeapon("+224", 25, "+236")
-    elseif choice == 6 then giveWeapon("+256", 29, "+268")
-    elseif choice == 7 then giveWeapon("+192", 22, "+204")
-    elseif choice == 8 then giveWeapon("+320", 33, "+332")
-    elseif choice == 9 then giveWeapon("+320", 34, "+332")
-    elseif choice == 10 then giveWeapon("+352", 38, "+364")
-    elseif choice == 11 then giveWeapon("+352", 35, "+364")
-    elseif choice == 12 then giveWeapon("+352", 36, "+364")
-    elseif choice == 13 then giveCustomWeapon()
-    elseif choice == 14 then showWeaponIDs()
-    elseif choice == 16 then gunMenu()
+    if not choice or choice == 14 then return gunMenu() end
+    if choice == 1 then giveWeapon("+192", 24, "+204")
+    elseif choice == 2 then giveWeapon("+288", 31, "+300")
+    elseif choice == 3 then giveWeapon("+288", 30, "+300")
+    elseif choice == 4 then giveWeapon("+224", 25, "+236")
+    elseif choice == 5 then giveWeapon("+256", 29, "+268")
+    elseif choice == 6 then giveWeapon("+192", 22, "+204")
+    elseif choice == 7 then giveWeapon("+320", 33, "+332")
+    elseif choice == 8 then giveWeapon("+320", 34, "+332")
+    elseif choice == 9 then giveWeapon("+352", 38, "+364")
+    elseif choice == 10 then giveWeapon("+352", 35, "+364")
+    elseif choice == 11 then giveWeapon("+352", 36, "+364")
+    elseif choice == 12 then giveCustomWeapon()
+    elseif choice == 13 then showWeaponIDs()
     end
     menuuuvis = -1
 end
@@ -1756,27 +1742,18 @@ end
 function giveAmmoMenu()
     menuuuvis = 0
     local choice = gg.choice({
-        "╔══════════════════════════════════╗",
-        "║        🔫 DEAGLE                 ║",
-        "║        🔫 GLOCK                  ║",
-        "║        🔫 M4                     ║",
-        "║        🔫 AK-47                  ║",
-        "║        🔫 MP5                    ║",
-        "║        🔫 SNIPER                 ║",
-        "║        🔫 SHOTGUN                ║",
-        "╚══════════════════════════════════╝",
-        "🔙 RETURN TO WEAPON MENU"
-    }, nil, "╔══════════════════════════════════════════════════╗\n║                GIVE AMMO - Adil                     ║\n╚══════════════════════════════════════════════════╝")
+        "► 🔫 DEAGLE", "► 🔫 GLOCK", "► 🔫 M4", "► 🔫 AK-47", 
+        "► 🔫 MP5", "► 🔫 SNIPER", "► 🔫 SHOTGUN", "⬅️ BACK"
+    }, nil, "【 📦 GIVE AMMO 】")
     
-    if not choice then gunMenu() end
-    if choice == 2 then giveAmmo("+204")
-    elseif choice == 3 then giveAmmo("+204")
+    if not choice or choice == 8 then return gunMenu() end
+    if choice == 1 then giveAmmo("+204")
+    elseif choice == 2 then giveAmmo("+204")
+    elseif choice == 3 then giveAmmo("+300")
     elseif choice == 4 then giveAmmo("+300")
-    elseif choice == 5 then giveAmmo("+300")
-    elseif choice == 6 then giveAmmo("+268")
-    elseif choice == 7 then giveAmmo("+332")
-    elseif choice == 8 then giveAmmo("+236")
-    elseif choice == 10 then gunMenu()
+    elseif choice == 5 then giveAmmo("+268")
+    elseif choice == 6 then giveAmmo("+332")
+    elseif choice == 7 then giveAmmo("+236")
     end
     menuuuvis = -1
 end
@@ -1784,39 +1761,38 @@ end
 function gunMenu()
     menuuuvis = 0
     local choice = gg.choice({
-        "╔══════════════════════════════════╗",
-        "║        🔫 GIVE WEAPON            ║",
-        "║        📦 GIVE AMMO              ║",
-        "║        🧹 CLEAR SLOTS            ║",
-        "║        ❄️ FREEZE SLOTS           ║",
-        "║        🔄 ANTI RELOAD            ║",
-        "║        ♾️ INFINITE AMMO          ║",
-        "║        ⚡ FIRE RATE (No Recoil)  ║",
-        "║        🎯 SCOPE SPEED            ║" .. (shshq == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🎯 NO SPREAD              ║" .. (sc == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        🌾 FARM SKILLS            ║" .. (fsk == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        ➕ ASSIST + C             ║" .. (avty == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "║        ⚡➕ FIRE RATE + SPEED    ║" .. (alertr == "✅" and " ✅ ACTIVE" or " ❌ INACTIVE"),
-        "╚══════════════════════════════════╝",
-        "🔙 RETURN TO MAIN MENU"
-    }, nil, "╔══════════════════════════════════════════════════╗\n║               WEAPON MODS - Adil                    ║\n╚══════════════════════════════════════════════════╝")
+        "► 🔫 GIVE WEAPON",
+        "► 📦 GIVE AMMO",
+        "► 🧹 CLEAR SLOTS",
+        "► ❄️ FREEZE SLOTS",
+        "► 🔄 ANTI RELOAD",
+        "► ♾️ INFINITE AMMO",
+        "► ⚡ FIRE RATE (No Recoil)",
+        "► 🎯 SCOPE SPEED"            .. (shshq == "✅" and " [ON]" or ""),
+        "► 🎯 NO SPREAD"              .. (sc == "✅" and " [ON]" or ""),
+        "► 🌾 FARM SKILLS"            .. (fsk == "✅" and " [ON]" or ""),
+        "► ➕ ASSIST + C"             .. (avty == "✅" and " [ON]" or ""),
+        "► ⚡➕ FIRE RATE + SPEED"    .. (alertr == "✅" and " [ON]" or ""),
+        "⬅️ RETURN TO MAIN MENU"
+    }, nil, "【 🔫 WEAPON MODS 】")
     
-    if not choice then mainMenu() end
+    if not choice or choice == 13 then 
+        mainMenu() 
+        return 
+    end
     
-    local actions = {2,3,4,5,6,7,8,9,10,11,12,13,14}
-    if choice == actions[1] then giveWeaponMenu()
-    elseif choice == actions[2] then giveAmmoMenu()
-    elseif choice == actions[3] then clearSlots()
-    elseif choice == actions[4] then freezeSlotsMenu()
-    elseif choice == actions[5] then antiReloadMenu()
-    elseif choice == actions[6] then infiniteAmmoMenu()
-    elseif choice == actions[7] then setFireRate()
-    elseif choice == actions[8] then toggleScopeSpeed()
-    elseif choice == actions[9] then toggleNoSpread()
-    elseif choice == actions[10] then toggleFarmSkills()
-    elseif choice == actions[11] then toggleAssist()
-    elseif choice == actions[12] then toggleFireRateSpeed()
-    elseif choice == actions[14] then mainMenu()
+    if choice == 1 then giveWeaponMenu()
+    elseif choice == 2 then giveAmmoMenu()
+    elseif choice == 3 then clearSlots()
+    elseif choice == 4 then freezeSlotsMenu()
+    elseif choice == 5 then antiReloadMenu()
+    elseif choice == 6 then infiniteAmmoMenu()
+    elseif choice == 7 then setFireRate()
+    elseif choice == 8 then toggleScopeSpeed()
+    elseif choice == 9 then toggleNoSpread()
+    elseif choice == 10 then toggleFarmSkills()
+    elseif choice == 11 then toggleAssist()
+    elseif choice == 12 then toggleFireRateSpeed()
     end
     menuuuvis = -1
 end
@@ -2239,70 +2215,77 @@ function showBuyers() showLocations(buyers, "╔══════════�
 function showBusinesses() showLocations(businesses, "╔══════════════════════════════════════════════════╗\n║               BUSINESSES - Adil                   ║\n╚══════════════════════════════════════════════════╝") end
 function showQuarries() showLocations(quarries, "╔══════════════════════════════════════════════════╗\n║                QUARRIES - Adil                    ║\n╚══════════════════════════════════════════════════╝") end
 
-function teleportByFootMenu()
+function tpMenu()
     menuuuvis = 0
     local choice = gg.choice({
-        "╔══════════════════════════════════╗",
-        "║        🏢 PUBLIC PLACES          ║",
-        "║        🚉 STATIONS               ║",
-        "║        🅿️ PARKING LOTS          ║",
-        "║        👮 GOVERNMENT             ║",
-        "║        🕵️ CRIMINAL              ║",
-        "║        🔰 STARTER JOBS           ║",
-        "║        💼 JOBS                   ║",
-        "║        🎉 ENTERTAINMENT          ║",
-        "║        🎁Airdrop BY Adil          ║",
-        "║        🚁 HELI CLUBS             ║",
-        "║        💰 BUYERS                 ║",
-        "║        💵 BUSINESSES             ║",
-        "║        ⛏️ QUARRIES               ║",
-        "║        📍 MY POINTS              ║",
-        "╚══════════════════════════════════╝",
-        "🔙 BACK"
-    }, nil, "╔══════════════════════════════════════════════════╗\n║            TELEPORT BY FOOT - Adil                 ║\n╚══════════════════════════════════════════════════╝")
+        "► 📍 TELEPORT BY COORDS",
+        "► 📌 TELEPORT BY MARKER",
+        "► 🤖 SMART AUTO TELEPORT"   .. (smartAutoTp == "✅" and " [ON]" or ""),
+        "► 🚗 CAR TELEPORT MENU",
+        "► 👣 TELEPORT BY FOOT",
+        "► 💾 SAVE/MANAGE POINTS",
+        "⬅️ RETURN TO MAIN MENU"
+    }, nil, "【 📍 TELEPORT SYSTEM 】")
     
-    if not choice then tpMenu() end
-    if choice == 2 then showPublicPlaces()
-    elseif choice == 3 then showStations()
-    elseif choice == 4 then showParking()
-    elseif choice == 5 then showGovernment()
-    elseif choice == 6 then showCriminal()
-    elseif choice == 7 then showStarterJobs()
-    elseif choice == 8 then showJobs()
-    elseif choice == 9 then showEntertainment()
-    elseif choice == 10 then showAirdropAdil()
-    elseif choice == 11 then showHeliClubs()
-    elseif choice == 12 then showBuyers()
-    elseif choice == 13 then showBusinesses()
-    elseif choice == 14 then showQuarries()
-    elseif choice == 15 then viewSavedPoints()
-    elseif choice == 16 then tpMenu()
+    if not choice or choice == 7 then 
+        mainMenu() 
+        return 
+    end
+    
+    if choice == 1 then teleportByCoords()
+    elseif choice == 2 then teleportByMarker()
+    elseif choice == 3 then toggleSmartAutoTp()
+    elseif choice == 4 then carTeleportMenu() 
+    elseif choice == 5 then teleportByFootMenu()
+    elseif choice == 6 then managePointsMenu()
     end
     menuuuvis = -1
 end
 
-function tpMenu()
+function carTeleportMenu()
     menuuuvis = 0
     local choice = gg.choice({
-        "╔══════════════════════════════════╗",
-        "║        📍 TELEPORT BY COORDS     ║",
-        "║        📌 TELEPORT BY MARKER     ║",
-        "║        🤖 SMART AUTO TELEPORTER  ║" .. (smartAutoTp == "✅" and " ✅ ON" or " ❌ OFF"), -- Naya Option
-        "║        🚗 CAR TELEPORT MENU      ║",
-        "║        👣 TELEPORT BY FOOT       ║",
-        "║        💾 SAVE/MANAGE POINTS     ║",
-        "╚══════════════════════════════════╝",
-        "🔙 BACK"
-    }, nil, "╔══════════════════════════════════════════════════╗\n║                TELEPORT - Adil                     ║\n╚══════════════════════════════════════════════════╝")
+        "► 🚗 SETUP 1: Aage-Peeche (Move)",
+        "► 📍 SETUP 2: Location (Hardcode)",
+        "► 🧠 SETUP 3: Smart Sync (Auto)",
+        "► ⚡ EXECUTE: TELEPORT TO MARKER",
+        "⬅️ BACK"
+    }, nil, "【 🎯 CAR TELEPORT MENU 】\nPehle Setup karo, fir Execute dabao")
     
-    if not choice then mainMenu() end
-    if choice == 2 then teleportByCoords()
-    elseif choice == 3 then teleportByMarker()
-    elseif choice == 4 then toggleSmartAutoTp() -- Naya Function Call
-    elseif choice == 5 then carTeleportMenu() 
-    elseif choice == 6 then teleportByFootMenu()
-    elseif choice == 7 then managePointsMenu()
-    elseif choice == 9 then mainMenu()
+    if not choice or choice == 5 then return tpMenu() end
+    if choice == 1 then setupCarMethod1()
+    elseif choice == 2 then setupCarMethod2()
+    elseif choice == 3 then setupCarMethod3()
+    elseif choice == 4 then executeCarTeleport()
+    end
+    menuuuvis = -1
+end
+
+function teleportByFootMenu()
+    menuuuvis = 0
+    local choice = gg.choice({
+        "► 🏢 PUBLIC PLACES", "► 🚉 STATIONS", "► 🅿️ PARKING LOTS", 
+        "► 👮 GOVERNMENT", "► 🕵️ CRIMINAL", "► 🔰 STARTER JOBS", 
+        "► 💼 JOBS", "► 🎉 ENTERTAINMENT", "► 🎁 Airdrop BY Adil", 
+        "► 🚁 HELI CLUBS", "► 💰 BUYERS", "► 💵 BUSINESSES", 
+        "► ⛏️ QUARRIES", "► 📍 MY POINTS", "⬅️ BACK"
+    }, nil, "【 👣 TELEPORT LOCATIONS 】")
+    
+    if not choice or choice == 15 then return tpMenu() end
+    if choice == 1 then showPublicPlaces()
+    elseif choice == 2 then showStations()
+    elseif choice == 3 then showParking()
+    elseif choice == 4 then showGovernment()
+    elseif choice == 5 then showCriminal()
+    elseif choice == 6 then showStarterJobs()
+    elseif choice == 7 then showJobs()
+    elseif choice == 8 then showEntertainment()
+    elseif choice == 9 then showAirdropAdil()
+    elseif choice == 10 then showHeliClubs()
+    elseif choice == 11 then showBuyers()
+    elseif choice == 12 then showBusinesses()
+    elseif choice == 13 then showQuarries()
+    elseif choice == 14 then viewSavedPoints()
     end
     menuuuvis = -1
 end
@@ -2484,35 +2467,30 @@ end
 function mainMenu()
     menuuuvis = 0
     local choice = gg.choice({
-        "╔════════════════════╗",
-        "║        👤 PLAYER MODS     ║",
-        "║        🚗 CAR MODS         ║",
-        "║        🔫 WEAPON MODS    ║",
-        "║        👁️ VISUAL MODS      ║",
-        "║        📍 TELEPORT          ║",
-        "╠════════════════════╣",
-        "║        🎯 AIMBOT Adil       ║",
-        "║        ⚡ FPS BOOSTER       ║",  -- New Option Added Here
-        "╠═══════════════════╣",
-        "║        👑 DEVELOPER      ║",
-        "║        💝 SUPPORT           ║",
-        "╠═════════════════╣",
-        "║        ❌ EXIT                   ║",
-        "╚═════════════════╝"
-    }, nil, "╔══════════════════════╗\n║ GRAND MOBILE SCRIPT Adil BAJWA 👿                   ║\n╚═════════════════════╝")
+        "► 👤 PLAYER MODS",
+        "► 🚗 CAR MODS",
+        "► 🔫 WEAPON MODS",
+        "► 👁️ VISUAL MODS",
+        "► 📍 TELEPORT SYSTEM",
+        "► 🎯 AIMBOT MENU",
+        "► ⚡ FPS BOOSTER",
+        "► 👑 DEVELOPER INFO",
+        "► 💝 SUPPORT CREATOR",
+        "► ❌ EXIT SCRIPT"
+    }, nil, "【 ADIL BAJWA VIP DASHBOARD 】\nStatus: Secure & Running")
     
     if not choice then return end
     
-    if choice == 2 then playerMenu()
-    elseif choice == 3 then carMenu()
-    elseif choice == 4 then gunMenu()
-    elseif choice == 5 then visualMenu()
-    elseif choice == 6 then tpMenu()
-    elseif choice == 8 then AdilAimMenu()
-    elseif choice == 9 then fpsBoosterMenu()  -- FPS Booster Sub-menu Trigger
-    elseif choice == 11 then devMenu()
-    elseif choice == 12 then supportMenu()
-    elseif choice == 14 then exitScript()
+    if choice == 1 then playerMenu()
+    elseif choice == 2 then carMenu()
+    elseif choice == 3 then gunMenu()
+    elseif choice == 4 then visualMenu()
+    elseif choice == 5 then tpMenu()
+    elseif choice == 6 then AdilAimMenu()
+    elseif choice == 7 then fpsBoosterMenu()
+    elseif choice == 8 then devMenu()
+    elseif choice == 9 then supportMenu()
+    elseif choice == 10 then exitScript()
     end
     
     menuuuvis = -1
@@ -2527,6 +2505,31 @@ toast.success("╔═════════════╗\n║             Ad
 gg.sleep(1500) 
 
 local autoTpTick = 0 -- Background timer ke liye
+
+-- ==========================================
+-- ⚡ ADVANCED BOOT ANIMATION ⚡
+-- ==========================================
+function hackerBootAnimation()
+    gg.setVisible(false)
+    local bootFrames = {
+        "⟳ Initializing Adil Bajwa Engine...",
+        "⚠ Bypassing Game Security [■□□□□]",
+        "⚠ Bypassing Game Security [■■■□□]",
+        "⚠ Bypassing Game Security [■■■■■]",
+        "⚙ Injecting Payloads into Memory...",
+        "✦ WELCOME TO ADIL VIP SCRIPT ✦"
+    }
+    
+    for i, frame in ipairs(bootFrames) do
+        gg.toast(frame)
+        gg.sleep(600) -- Har frame 0.6 seconds ke liye dikhega
+    end
+end
+
+-- Animation ko start karne ke liye call karo
+hackerBootAnimation()
+
+-- (Yahan se tumhara purana "while true do" loop start hoga)
 
 while true do
     if gg.isVisible(true) then
