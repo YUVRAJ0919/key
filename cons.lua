@@ -1302,29 +1302,7 @@ function executeCarTeleport()
     end
 end
 
--- 📱 NAYA MENU CAR TELEPORT KE LIYE
-function carTeleportMenu()
-    menuuuvis = 0
-    local choice = gg.choice({
-        "╔══════════════════════════════════╗",
-        "║   🚗 SETUP 1: Aage-Peeche (Move) ║",
-        "║   📍 SETUP 2: Location (Hardcode)║",
-        "║   🧠 SETUP 3: Smart Sync (Auto)  ║",
-        "╠══════════════════════════════════╣",
-        "║   ⚡ EXECUTE: TELEPORT TO MARKER ║",
-        "╚══════════════════════════════════╝",
-        "🔙 BACK TO TELEPORT MENU"
-    }, nil, "🎯 CAR TELEPORT MENU 🎯\n(Pehle Setup karo, fir Execute dabao)")
-    
-    if not choice then tpMenu() end
-    if choice == 2 then setupCarMethod1()
-    elseif choice == 3 then setupCarMethod2()
-    elseif choice == 4 then setupCarMethod3()
-    elseif choice == 6 then executeCarTeleport()
-    elseif choice == 8 then tpMenu()
-    end
-    menuuuvis = -1
-end
+-- 📱 NAYA MENU CAR TELEPORT KE LIYe
 
 function launchToSpace()
     Z.S("-0.00800000038", F, Cd|Ca|O)
@@ -1986,29 +1964,6 @@ function teleportByCoords()
     if not coords then return tpMenu() end
     doTeleport(coords[1], coords[2], coords[3])
     tpMenu()
-end
-
-function teleportByMarker()
-    hookPLAYER(-4, F, 350)
-
-    local target = findFirstValidMarker()
-    if not target then
-        hookPLAYER(-4, F, 100)
-        gg.toast("❌ Marker not found!")
-        return tpMenu()
-    end
-
-    gg.toast("🟢 Teleporting...")
-    gg.sleep(150)
-    gg.toast("⏳ Loading...")
-    gg.sleep(200)
-
-    if doTeleportSafe(target.x, target.y, target.z + 1.2) then
-        gg.toast("✅ Teleported")
-    end
-
-    hookPLAYER(-4, F, 100)
-    return tpMenu()
 end
 
 -- ==========================================
