@@ -954,31 +954,118 @@ myCarAddress = nil -- Global variable car ka address save karne ke liye
 
 -- 🟢 METHOD 1: Aage-Peeche (Movement Based)
 function setupCarMethod1()
-    gg.toast("🛑 Gaadi rok do...")
-    gg.sleep(1000)
-    
-    local px1, py1 = getCurrentCoords()
-    if not px1 then return tpMenu() end
-    
-    gg.alert("Step 1 Complete!\n\nAb gaadi ko thoda aage chalao (2-3 second) aur rok kar OK dabao.")
-    
-    local px2, py2 = getCurrentCoords()
-    gg.toast("🔍 Scanning Movement...")
-    
-    gg.clearResults()
-    gg.setRanges(gg.REGION_C_ALLOC | gg.REGION_OTHER)
-    -- Jo naye coordinates ban gaye hain, unko search karega
-    gg.searchNumber(tostring(px2 - 2) .. "~" .. tostring(px2 + 2), gg.TYPE_FLOAT)
-    
-    if gg.getResultCount() > 0 then
-        local res = gg.getResults(10)
-        myCarAddress = res[1].address -- First result utha lega
-        gg.toast("✅ SETUP 1 SUCCESS! Car Locked.")
-    else
-        gg.toast("❌ SETUP 1 FAIL: Car detect nahi hui.")
+    gg.toast("Setup 1 running: Stop car, then move little, then stop.")
+    gg.sleep(600)
+
+    local p1x, p1y, p1z = getCurrentCoords()
+    if not p1x then
+        gg.toast("Error: Could not read start coords.")
+        return carTeleportMenu()
     end
+
+    gg.alert("Step 1 done.\nNow move car slightly (2-3 sec) and stop, then press OK.")
+
+    local p2x, p2y, p2z = getCurrentCoords()
+    if not p2x then
+        gg.toast("Error: Could not read moved coords.")
+        return carTeleportMenu()
+    end
+
+    local dx = p2x - p1x
+    local dy = p2y - p1y
+    local dz = p2z - p1z
+    local moved = (math.abs(dx) + math.abs(dy) + math.abs(dz)) > 0.20
+
+    if not moved then
+        gg.toast("Setup 1 fail: Movement not detected. Move car more and try again.")
+        return carTeleportMenu()
+    end
+
     gg.clearResults()
-    carTeleportMenu()
+    gg.setRanges(gg.REGION_C_ALLOC | gg.REGION_C_DATA | gg.REGION_OTHER)
+
+    -- Search around new X coordinate after movement
+    gg.searchNumber(string.format("%.3f~%.3f", p2x - 5.0, p2x + 5.0), gg.TYPE_FLOAT)
+
+    local count = gg.getResultCount()
+    if count == 0 then
+        gg.clearResults()
+        gg.toast("Setup 1 fail: No candidates found.")
+        return carTeleportMenu()
+    end
+
+    local candidates = gg.getResults(math.min(count, 800))
+    local bestAddr = nil
+    local bestScore = 99999999
+
+    for _, v in ipairs(candidates) do
+        local addr = v.address
+        local vals = gg.getValues({
+            {address = addr, flags = F},           -- X
+            {address = addr + 4, flags = F},       -- Y
+            {address = addr + 8, flags = F},       -- Z
+            {address = addr + 0x58, flags = F},    -- Mass
+            {address = addr + 0x5DC, flags = F}    -- Vehicle Health
+        })
+
+        local x = vals[1].value
+        local y = vals[2].value
+        local z = vals[3].value
+        local mass = vals[4].value
+        local hp = vals[5].value
+
+        local validPos = (x > -5000 and x < 5000 and y > -5000 and y < 5000 and z > -200 and z < 2000)
+        local validMass = (mass > 80 and mass < 20000)
+        local validHp = (hp > 10 and hp < 100000000)
+
+        if validPos and validMass and validHp then
+            local distNow = math.abs(x - p2x) + math.abs(y - p2y) + math.abs(z - p2z)
+
+            -- Check if candidate also matches old position after reversing movement vector
+            local backX = x - dx
+            local backY = y - dy
+            local backZ = z - dz
+            local distBack = math.abs(backX - p1x) + math.abs(backY - p1y) + math.abs(backZ - p1z)
+
+            local score = (distNow * 2.0) + distBack
+            if score < bestScore then
+                bestScore = score
+                bestAddr = addr
+            end
+        end
+    end
+
+    gg.clearResults()
+
+    if not bestAddr then
+        gg.toast("Setup 1 fail: Correct car not found.")
+        return carTeleportMenu()
+    end
+
+    -- Final verification: locked address should be near current player/car position
+    gg.sleep(120)
+    local verify = gg.getValues({
+        {address = bestAddr, flags = F},
+        {address = bestAddr + 4, flags = F},
+        {address = bestAddr + 8, flags = F}
+    })
+
+    local vx, vy, vz = verify[1].value, verify[2].value, verify[3].value
+    local px, py, pz = getCurrentCoords()
+    if not px then
+        gg.toast("Setup 1 fail: Verification read failed.")
+        return carTeleportMenu()
+    end
+
+    local verifyDist = math.abs(vx - px) + math.abs(vy - py) + math.abs(vz - pz)
+    if verifyDist > 20 then
+        gg.toast("Setup 1 fail: Wrong lock. Sit in car and retry.")
+        return carTeleportMenu()
+    end
+
+    myCarAddress = bestAddr
+    gg.toast("Setup 1 success: Car locked with verification.")
+    return carTeleportMenu()
 end
 
 -- 🟡 METHOD 2: Specific Location (Hardcoded)
@@ -1013,31 +1100,116 @@ end
 
 -- 🔵 METHOD 3: Smart Sync (Player Coords)
 function setupCarMethod3()
-    gg.toast("⏳ Smart Setup chal raha hai... Gaadi me baithe raho!")
-    
-    local pX, pY, pZ = getCurrentCoords() 
-    if not pX then return carTeleportMenu() end
-    
+    gg.toast("Smart setup running... stay seated in your car.")
+    gg.sleep(300)
+
+    local p1x, p1y, p1z = getCurrentCoords()
+    if not p1x then
+        gg.toast("Error: Could not read player coords.")
+        return carTeleportMenu()
+    end
+
+    gg.sleep(250)
+    local p2x, p2y, p2z = getCurrentCoords()
+    if not p2x then
+        gg.toast("Error: Could not refresh player coords.")
+        return carTeleportMenu()
+    end
+
+    local dx = p2x - p1x
+    local dy = p2y - p1y
+    local dz = p2z - p1z
+    local moved = (math.abs(dx) + math.abs(dy) + math.abs(dz)) > 0.15
+
     gg.clearResults()
-    gg.setRanges(gg.REGION_C_ALLOC | gg.REGION_OTHER)
-    gg.searchNumber(tostring(pX - 1) .. "~" .. tostring(pX + 1), gg.TYPE_FLOAT)
-    
-    if gg.getResultCount() > 0 then
-        local results = gg.getResults(100)
-        for i, v in ipairs(results) do
-            local checkVals = gg.getValues({{address = v.address + 4, flags = gg.TYPE_FLOAT}})
-            local carY = checkVals[1].value
-            if math.abs(carY - pY) < 2.0 then
-                myCarAddress = v.address
-                gg.toast("✅ SETUP 3 SUCCESS! Car Lock Ho Gayi.")
-                gg.clearResults()
-                return carTeleportMenu()
+    gg.setRanges(gg.REGION_C_ALLOC | gg.REGION_C_DATA | gg.REGION_OTHER)
+
+    -- Slightly wider search window for stability
+    gg.searchNumber(string.format("%.3f~%.3f", p2x - 4.0, p2x + 4.0), gg.TYPE_FLOAT)
+
+    local count = gg.getResultCount()
+    if count == 0 then
+        gg.clearResults()
+        gg.toast("Setup 3 fail: No nearby candidates found.")
+        return carTeleportMenu()
+    end
+
+    local candidates = gg.getResults(math.min(count, 600))
+    local bestAddr = nil
+    local bestScore = 99999999
+
+    for _, v in ipairs(candidates) do
+        local addr = v.address
+        local vals = gg.getValues({
+            {address = addr, flags = F},           -- X
+            {address = addr + 4, flags = F},       -- Y
+            {address = addr + 8, flags = F},       -- Z
+            {address = addr + 0x58, flags = F},    -- Mass
+            {address = addr + 0x5DC, flags = F}    -- Vehicle Health
+        })
+
+        local x = vals[1].value
+        local y = vals[2].value
+        local z = vals[3].value
+        local mass = vals[4].value
+        local hp = vals[5].value
+
+        -- Basic sanity filters
+        local validPos = (x > -5000 and x < 5000 and y > -5000 and y < 5000 and z > -200 and z < 2000)
+        local validMass = (mass > 80 and mass < 20000)
+        local validHp = (hp > 10 and hp < 100000000)
+
+        if validPos and validMass and validHp then
+            local distNow = math.abs(x - p2x) + math.abs(y - p2y) + math.abs(z - p2z)
+            local moveScore = 0
+
+            -- If player moved a little, good car candidates should follow same movement
+            if moved then
+                local backX = x - dx
+                local backY = y - dy
+                local backZ = z - dz
+                moveScore = math.abs(backX - p1x) + math.abs(backY - p1y) + math.abs(backZ - p1z)
+            end
+
+            local score = (distNow * 2.0) + moveScore
+            if score < bestScore then
+                bestScore = score
+                bestAddr = addr
             end
         end
     end
-    gg.toast("❌ SETUP 3 FAIL: Sahi gaadi nahi mili.")
+
     gg.clearResults()
-    carTeleportMenu()
+
+    if not bestAddr then
+        gg.toast("Setup 3 fail: Could not lock correct car.")
+        return carTeleportMenu()
+    end
+
+    -- Final verification: locked address should still be near player
+    gg.sleep(120)
+    local verify = gg.getValues({
+        {address = bestAddr, flags = F},
+        {address = bestAddr + 4, flags = F},
+        {address = bestAddr + 8, flags = F}
+    })
+
+    local vx, vy, vz = verify[1].value, verify[2].value, verify[3].value
+    local px, py, pz = getCurrentCoords()
+    if not px then
+        gg.toast("Setup 3 fail: Verification read failed.")
+        return carTeleportMenu()
+    end
+
+    local verifyDist = math.abs(vx - px) + math.abs(vy - py) + math.abs(vz - pz)
+    if verifyDist > 20 then
+        gg.toast("Setup 3 fail: Wrong vehicle lock. Try again while seated.")
+        return carTeleportMenu()
+    end
+
+    myCarAddress = bestAddr
+    gg.toast("Setup 3 success: Car locked with verification.")
+    return carTeleportMenu()
 end
 
 -- ⚡ THE EXECUTOR (Teleport to Marker)
