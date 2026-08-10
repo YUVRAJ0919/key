@@ -1783,72 +1783,53 @@ function teleportByCoords()
     tpMenu()
 end
 
+function teleportByMarker()
+    hookPLAYER(-4, F, 350)
+
+    local target = findFirstValidMarker()
+    if not target then
+        hookPLAYER(-4, F, 100)
+        gg.toast("❌ Marker not found!")
+        return tpMenu()
+    end
+
+    gg.toast("🟢 Teleporting...")
+    gg.sleep(150)
+    gg.toast("⏳ Loading...")
+    gg.sleep(200)
+
+    if doTeleportSafe(target.x, target.y, target.z + 1.2) then
+        gg.toast("✅ Teleported")
+    end
+
+    hookPLAYER(-4, F, 100)
+    return tpMenu()
+end
+
 -- ==========================================
 -- TELEPORT BY MARKER (ANTI-STUCK FIX)
 -- ==========================================
 function teleportByMarker()
     hookPLAYER(-4, F, 350)
-    while true do
-        fg.clean()
-        local points = {}
-        local menu = {}
-        
-        for _, q in ipairs({"13950255104", "5360320512"}) do
-            if #points == 0 then
-                Z.S(q, Q, O)
-                if Result then
-                    for _, v in ipairs(Result) do
-                        local vals = gg.getValues({
-                            {address = v.address + 32, flags = F},
-                            {address = v.address + 36, flags = F},
-                            {address = v.address + 40, flags = F},
-                            {address = v.address + 48, flags = F}
-                        })
-                        local x, y, z, active = vals[1].value, vals[2].value, vals[3].value, vals[4].value
-                        
-                        if x ~= 0 and y ~= 0 and x > -3000 and x < 3000 and y > -3000 and y < 3000 and z == 0 and active == 1 then
-                            -- YAHAN CHANGE HAI: Humne marker ka memory address bhi save kar liya (addr = v.address)
-                            table.insert(points, {x = x, y = y, addr = v.address}) 
-                            table.insert(menu, string.format("📍 [%d] X:%.1f Y:%.1f", #points, x, y))
-                        end
-                    end
-                end
-            end
-        end
-        
-        if #points == 0 then
-            showError()
-            fg.clean()
-            hookPLAYER(-4, F, 100)
-            return tpMenu()
-        end
-        
-        table.insert(menu, "🔄 REFRESH")
-        table.insert(menu, "🔙 BACK")
-        
-        local s = gg.choice(menu, nil, "╔══════════════════════════════════════════════════╗\n║           SELECT MARKER TO TELEPORT                 ║\n╚══════════════════════════════════════════════════╝")
-        
-        if not s then
-            gg.setVisible(false)
-            while not gg.isVisible() do gg.sleep(200) end
-        elseif menu[s] == "🔙 BACK" then
-            fg.clean()
-            hookPLAYER(-4, F, 100)
-            return tpMenu()
-        elseif menu[s] == "🔄 REFRESH" then
-            -- Refresh karega bina kuch kiye
-        else
-            -- 1. Pehle teleport karo
-            doTeleport(points[s].x, points[s].y, 50)
-            
-            -- 2. THE ULTIMATE FIX: Us marker ko memory se hamesha ke liye Delete (Wipe) kar do!
-            gg.setValues({{address = points[s].addr, value = 0, flags = gg.TYPE_QWORD}})
-            
-            showSuccess()
-            fg.clean()
-            break
-        end
+
+    local target = findFirstValidMarker()
+    if not target then
+        hookPLAYER(-4, F, 100)
+        gg.toast("❌ Marker not found!")
+        return tpMenu()
     end
+
+    gg.toast("🟢 Teleporting...")
+    gg.sleep(150)
+    gg.toast("⏳ Loading...")
+    gg.sleep(200)
+
+    if doTeleportSafe(target.x, target.y, target.z + 1.2) then
+        gg.toast("✅ Teleported")
+    end
+
+    hookPLAYER(-4, F, 100)
+    return tpMenu()
 end
 
 FILE_PATH = gg.EXT_STORAGE .. "/Adil_points.txt"
@@ -1895,39 +1876,33 @@ function toggleSmartAutoTp()
 end
 
 function backgroundMarkerCheck()
-    local points = {}
-    for _, q in ipairs({"13950255104", "5360320512"}) do
-        if #points == 0 then
-            Z.S(q, Q, O)
-            if Result then
-                for _, v in ipairs(Result) do
-                    local vals = gg.getValues({
-                        {address = v.address + 32, flags = F},
-                        {address = v.address + 36, flags = F},
-                        {address = v.address + 40, flags = F},
-                        {address = v.address + 48, flags = F}
-                    })
-                    local x, y, z, active = vals[1].value, vals[2].value, vals[3].value, vals[4].value
-                    
-                    if x ~= 0 and y ~= 0 and x > -3000 and x < 3000 and y > -3000 and y < 3000 and z == 0 and active == 1 then
-                        table.insert(points, {x = x, y = y, addr = v.address})
-                    end
-                end
-            end
-        end
+    if autoTpCooldownTicks > 0 then
+        autoTpCooldownTicks = autoTpCooldownTicks - 1
+        return
     end
 
-    if #points > 0 then
-        local target = points[1]
-        
-        -- Teleport karega
-        doTeleport(target.x, target.y, 50)
-        
-        -- Marker ko memory se destroy karega taaki baar-baar wahi na feke
-        gg.setValues({{address = target.addr, value = 0, flags = gg.TYPE_QWORD}})
-        gg.toast("⚡ BHOOM! Auto-Teleported!")
+    local target = findFirstValidMarker()
+    if not target then
+        lastMarkerKey = nil
+        return
     end
-    gg.clearResults()
+
+    local key = markerKey(target.x, target.y, target.z)
+    if key == lastMarkerKey then return end
+
+    gg.toast("🟢 Teleporting...")
+    gg.sleep(120)
+    gg.toast("🟢 Loading.")
+    gg.sleep(120)
+    gg.toast("🟢 Loading..")
+    gg.sleep(120)
+    gg.toast("🟢 Loading...")
+
+    if doTeleportSafe(target.x, target.y, target.z + 1.2) then
+        gg.toast("🟢 Teleported")
+        lastMarkerKey = key
+        autoTpCooldownTicks = 18
+    end
 end
 
 function getCurrentCoords()
@@ -2508,7 +2483,7 @@ while true do
     end
     
     -- 🤖 SMART AUTO TELEPORT BACKGROUND LOGIC
-    if smartAutoTp == "✅" and menuuuvis == -1 then
+    if smartAutoTp == "✅" then
         autoTpTick = autoTpTick + 1
         -- Har 20 ticks (lagbhag 2 second) me ek baar check karega taaki game lag na ho
         if autoTpTick >= 20 then 
