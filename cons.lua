@@ -1041,12 +1041,34 @@ function setupCarMethod3()
 end
 
 -- ⚡ THE EXECUTOR (Teleport to Marker)
+-- Helpers for car teleport verification
+local function getCarCoords(addr)
+    local v = gg.getValues({
+        {address = addr, flags = F},
+        {address = addr + 4, flags = F},
+        {address = addr + 8, flags = F}
+    })
+    return v[1].value, v[2].value, v[3].value
+end
+
+local function near(a, b, tol)
+    return math.abs(a - b) <= tol
+end
+
 function executeCarTeleport()
     if not myCarAddress then
-        gg.toast("⚠️ Pehle koi ek SETUP complete karo!")
+        gg.toast("Error: Car not locked. Run setup first.")
         return carTeleportMenu()
     end
-    
+
+    -- Validate locked car address first
+    local cx, cy, cz = getCarCoords(myCarAddress)
+    if not cx or (cx == 0 and cy == 0 and cz == 0) then
+        gg.toast("Error: Saved car address is invalid. Run setup again.")
+        return carTeleportMenu()
+    end
+
+    -- Find marker
     local points = {}
     for _, q in ipairs({"13950255104", "5360320512"}) do
         if #points == 0 then
@@ -1060,41 +1082,52 @@ function executeCarTeleport()
                         {address = v.address + 48, flags = F}
                     })
                     local x, y, z, active = vals[1].value, vals[2].value, vals[3].value, vals[4].value
-                    if x ~= 0 and y ~= 0 and active == 1 then
+                    if x ~= 0 and y ~= 0 and x > -3000 and x < 3000 and y > -3000 and y < 3000 and active == 1 then
                         table.insert(points, {x, y, z})
                     end
                 end
             end
         end
     end
+    gg.clearResults()
 
     if #points == 0 then
-        gg.toast("❌ Map par marker nahi mila!")
-        gg.clearResults()
+        gg.toast("Error: Marker not found.")
         return carTeleportMenu()
     end
 
-    local target = points[1]
-    
-    -- THE FIX: ENGINE SYNC BY FREEZING MEMORY
-    gg.clearList() -- Pehle se agar kuch freeze hai toh usey hatao
-    
-    -- setvalue me 4th argument "true" bheja hai, jisse coords lock ho jayenge
-    setvalue(myCarAddress, target[1], F, true)       -- X Freeze
-    setvalue(myCarAddress + 4, target[2], F, true)   -- Y Freeze
-    setvalue(myCarAddress + 8, target[3] + 2, F, true) -- Z Freeze (+2 Height for Safe Drop)
-    
-    gg.toast("⏳ Engine Syncing... Hold on!")
-    
-    -- 500ms (Aadha second) ke liye script ko roko, taaki server naye coords accept kar le
-    gg.sleep(500) 
-    
-    -- Nayi jagah par pohochne ke baad gaadi ko unfreeze karo taaki drive kar sako
-    gg.clearList() 
-    
-    gg.toast("✓ [ SUCCESS ] \n✦ BOOM! Gaadi Teleport Ho Gayi!")
-    gg.clearResults()
-    tpMenu()
+    local tx = points[1][1]
+    local ty = points[1][2]
+    local tz = points[1][3] + 2.0
+
+    gg.toast("Teleporting car...")
+    gg.clearList()
+
+    -- Multi-write + freeze for better server sync
+    local success = false
+    for attempt = 1, 8 do
+        setvalue(myCarAddress, tx, F, true)
+        setvalue(myCarAddress + 4, ty, F, true)
+        setvalue(myCarAddress + 8, tz, F, true)
+
+        gg.sleep(120)
+
+        local vx, vy, vz = getCarCoords(myCarAddress)
+        if near(vx, tx, 2.5) and near(vy, ty, 2.5) and near(vz, tz, 4.0) then
+            success = true
+            break
+        end
+    end
+
+    gg.clearList()
+
+    if success then
+        gg.toast("Success: Car teleported.")
+        return tpMenu()
+    else
+        gg.toast("Failed: Car not teleported. Re-run setup while sitting in car.")
+        return carTeleportMenu()
+    end
 end
 
 -- 📱 NAYA MENU CAR TELEPORT KE LIYE
